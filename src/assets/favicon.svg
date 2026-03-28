@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06B6D4"></stop>
+      <stop offset="100%" stop-color="#A78BFA"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="64" height="64" rx="12" fill="#0f172a"></rect>
+
+  <!-- Text -->
+  <text x="50%" y="55%" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="url(#grad)">
+    SRA
+  </text>
+
+  <!-- Spark -->
+  <polygon points="50,10 54,18 62,20 54,22 50,30 46,22 38,20 46,18" fill="#ffffff"></polygon>
+</svg>
