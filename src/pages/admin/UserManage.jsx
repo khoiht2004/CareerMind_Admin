@@ -12,7 +12,7 @@ import UserTable from "@/components/admin/UserTable";
 
 function UserManage() {
   const [search, setSearch] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("ALL");
 
   return (
     <div className="p-6 space-y-6">
@@ -39,7 +39,7 @@ function UserManage() {
             <SelectValue placeholder="Tất cả vai trò" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Tất cả vai trò</SelectItem>
+            <SelectItem value="ALL">Tất cả vai trò</SelectItem>
             <SelectItem value="CANDIDATE">Ứng viên</SelectItem>
             <SelectItem value="RECRUITER">Nhà tuyển dụng</SelectItem>
             <SelectItem value="ADMIN">Admin</SelectItem>

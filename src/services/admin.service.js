@@ -17,7 +17,7 @@ export const adminService = apiSlice.injectEndpoints({
     getAdminUsers: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && search.set(k, v));
+        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v));
         return `/admin/users?${search.toString()}`;
       },
       providesTags: ["User"],
@@ -33,7 +33,7 @@ export const adminService = apiSlice.injectEndpoints({
     getAdminJobs: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && search.set(k, v));
+        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v));
         return `/admin/jobs?${search.toString()}`;
       },
       providesTags: ["Job"],
@@ -45,7 +45,7 @@ export const adminService = apiSlice.injectEndpoints({
     getAdminApplications: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && search.set(k, v));
+        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v));
         return `/admin/applications?${search.toString()}`;
       },
       providesTags: ["Application"],
@@ -60,7 +60,7 @@ export const adminService = apiSlice.injectEndpoints({
     getAdminChatSessions: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && search.set(k, v));
+        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v));
         return `/admin/chat-sessions?${search.toString()}`;
       },
     }),

@@ -12,8 +12,8 @@ import JobTable from "@/components/admin/JobTable";
 
 function JobManage() {
   const [search, setSearch] = useState("");
-  const [type, setType] = useState("");
-  const [status, setStatus] = useState("");
+  const [type, setType] = useState("ALL");
+  const [status, setStatus] = useState("ALL");
 
   return (
     <div className="p-6 space-y-6">
@@ -40,7 +40,7 @@ function JobManage() {
             <SelectValue placeholder="Tất cả loại hình" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Tất cả loại hình</SelectItem>
+            <SelectItem value="ALL">Tất cả loại hình</SelectItem>
             <SelectItem value="FULL_TIME">Toàn thời gian</SelectItem>
             <SelectItem value="PART_TIME">Bán thời gian</SelectItem>
             <SelectItem value="REMOTE">Remote</SelectItem>
@@ -53,7 +53,7 @@ function JobManage() {
             <SelectValue placeholder="Tất cả trạng thái" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Tất cả trạng thái</SelectItem>
+            <SelectItem value="ALL">Tất cả trạng thái</SelectItem>
             <SelectItem value="PUBLISHED">Đang tuyển</SelectItem>
             <SelectItem value="DRAFT">Nháp</SelectItem>
             <SelectItem value="CLOSED">Đã đóng</SelectItem>

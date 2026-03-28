@@ -12,7 +12,7 @@ import ApplicationTable from "@/components/admin/ApplicationTable";
 
 function ApplicationManage() {
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("ALL");
 
   return (
     <div className="p-6 space-y-6">
@@ -39,7 +39,7 @@ function ApplicationManage() {
             <SelectValue placeholder="Tất cả trạng thái" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Tất cả trạng thái</SelectItem>
+            <SelectItem value="ALL">Tất cả trạng thái</SelectItem>
             <SelectItem value="PENDING">Chờ duyệt</SelectItem>
             <SelectItem value="REVIEWING">Đang xem xét</SelectItem>
             <SelectItem value="INTERVIEW">Phỏng vấn</SelectItem>
