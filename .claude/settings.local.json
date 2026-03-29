@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npx shadcn@latest add input label card separator sonner badge select tabs avatar textarea scroll-area table dropdown-menu dialog --yes)",
-      "Bash(npx shadcn@latest add chart sidebar --yes)"
+      "Bash(npx shadcn@latest add chart sidebar --yes)",
+      "Bash(xargs grep:*)"
     ]
   }
 }

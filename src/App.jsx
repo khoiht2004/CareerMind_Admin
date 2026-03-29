@@ -16,10 +16,6 @@ import ApplicationManage from "@/pages/admin/ApplicationManage";
 import ChatBotManage from "@/pages/admin/ChatBotManage";
 import SystemManage from "@/pages/admin/SystemManage";
 
-// Guards
-import AdminGuard from "@/components/shared/AdminGuard";
-
-// Auth initializer — triggers getMe on app start to restore session
 import { useGetMeQuery } from "@/services/auth.service";
 
 function AuthInitializer() {
@@ -39,17 +35,15 @@ function App() {
 
         {/* Private Admin routes */}
         <Route element={<PrivateLayout />}>
-          <Route element={<AdminGuard />}>
-            <Route path={path.admin.root} element={<Dashboard />} />
-            <Route path={path.admin.users} element={<UserManage />} />
-            <Route path={path.admin.jobs} element={<JobManage />} />
-            <Route
-              path={path.admin.applications}
-              element={<ApplicationManage />}
-            />
-            <Route path={path.admin.ai} element={<ChatBotManage />} />
-            <Route path={path.admin.settings} element={<SystemManage />} />
-          </Route>
+          <Route path={path.admin.root} element={<Dashboard />} />
+          <Route path={path.admin.users} element={<UserManage />} />
+          <Route path={path.admin.jobs} element={<JobManage />} />
+          <Route
+            path={path.admin.applications}
+            element={<ApplicationManage />}
+          />
+          <Route path={path.admin.ai} element={<ChatBotManage />} />
+          <Route path={path.admin.settings} element={<SystemManage />} />
         </Route>
 
         {/* Fallback route */}

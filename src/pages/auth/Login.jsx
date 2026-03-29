@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,11 +16,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { useDispatch } from "react-redux";
 import { path } from "@/config/path";
 import { TOKEN_KEY, REFRESH_TOKEN_KEY } from "@/config/constants";
-import { useLoginMutation, authService } from "@/services/auth.service";
+import { useLoginMutation } from "@/services/auth.service";
+import { setUser } from "@/store/slice/authSlice";
 
 const schema = z.object({
   email: z.string().email("Email không hợp lệ"),
@@ -41,14 +41,18 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       const res = await login(data).unwrap();
-      const accessToken = res?.data?.accessToken ?? res?.accessToken;
-      const refreshToken = res?.data?.refreshToken ?? res?.refreshToken;
+      const role = res?.data?.role;
+      if (role !== "ADMIN") {
+        toast.error("Bạn không có quyền truy cập trang quản trị");
+        return;
+      }
+
+      const accessToken = res?.data?.accessToken;
+      const refreshToken = res?.data?.refreshToken;
       if (accessToken) localStorage.setItem(TOKEN_KEY, accessToken);
       if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
-      await dispatch(
-        authService.endpoints.getMe.initiate(undefined, { forceRefetch: true }),
-      ).unwrap();
+      dispatch(setUser(res?.data));
 
       toast.success("Đăng nhập thành công!");
       navigate(path.admin.root);
@@ -65,7 +69,7 @@ function Login() {
             SRA
           </div>
         </div>
-        <CardTitle className="text-2xl">Chào mừng trở lại!</CardTitle>
+        <CardTitle className="text-2xl">Trang dành cho Quản trị viên</CardTitle>
         <CardDescription>Đăng nhập để vào trang quản trị</CardDescription>
       </CardHeader>
 

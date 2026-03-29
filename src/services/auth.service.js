@@ -15,7 +15,6 @@ export const authService = apiSlice.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ["User"],
     }),
     verifyEmail: builder.mutation({
       query: (credentials) => ({
@@ -25,7 +24,11 @@ export const authService = apiSlice.injectEndpoints({
       }),
     }),
     resendVerification: builder.mutation({
-      query: (body) => ({ url: "/auth/resend-verification", method: "POST", body }),
+      query: (body) => ({
+        url: "/auth/resend-verification",
+        method: "POST",
+        body,
+      }),
     }),
     changePassword: builder.mutation({
       query: (body) => ({ url: "/auth/change-password", method: "POST", body }),

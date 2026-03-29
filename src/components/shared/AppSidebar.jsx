@@ -19,6 +19,7 @@ import {
 import NavItem from "./NavItem";
 import SectionHeader from "./SectionHeader";
 import ThemeToggle from "./ThemeToggle";
+import { useState } from "react";
 
 const adminNavItems = [
   { to: path.admin.root, icon: LayoutDashboard, label: "Dashboard", end: true },
@@ -32,6 +33,8 @@ const adminNavItems = [
 function AppSidebar() {
   const { user } = useSelector((state) => state.auth);
   const { isCollapsed } = useSidebar();
+
+  const [sectionOpen, setSectionOpen] = useState(true);
 
   return (
     <div className="flex h-full flex-col py-4">
@@ -69,14 +72,16 @@ function AppSidebar() {
         <SectionHeader
           label="Quản trị"
           isCollapsed={isCollapsed}
-          open={true}
-          onToggle={() => {}}
+          open={sectionOpen}
+          onToggle={() => setSectionOpen((isOpen) => !isOpen)}
         />
-        <div className="space-y-0.5">
-          {adminNavItems.map((item) => (
-            <NavItem key={item.to} {...item} isCollapsed={isCollapsed} />
-          ))}
-        </div>
+        {(isCollapsed || sectionOpen) && (
+          <div className="space-y-0.5">
+            {adminNavItems.map((item) => (
+              <NavItem key={item.to} {...item} isCollapsed={isCollapsed} />
+            ))}
+          </div>
+        )}
       </nav>
 
       {/* User info */}

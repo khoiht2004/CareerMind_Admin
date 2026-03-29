@@ -13,7 +13,6 @@ function LayoutContent() {
   const mainRef = useRef(null);
   const location = useLocation();
 
-  // Scroll to top on every route change
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
   }, [location.pathname]);
@@ -45,12 +44,12 @@ function PrivateLayout() {
   if (!isChecked) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="size-6 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground size-6 animate-spin" />
       </div>
     );
   }
 
-  if (!user) {
+  if (!user || user.role !== "ADMIN") {
     return <Navigate to={path.login} replace />;
   }
 
