@@ -3,7 +3,12 @@
     "allow": [
       "Bash(npx shadcn@latest add input label card separator sonner badge select tabs avatar textarea scroll-area table dropdown-menu dialog --yes)",
       "Bash(npx shadcn@latest add chart sidebar --yes)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(grep -r \"bookmark\\\\|saved.*job\\\\|favorite\" e:F8_FullStack_OfflineDự_ánSmart_Recuit_Assistant_SRABEsrc --include=*.js)",
+      "Bash(grep -r \"bookmark\\\\|saved.*job\\\\|favorite\" e:F8_FullStack_OfflineDự_ánSmart_Recuit_Assistant_SRAFEsrc --include=*.jsx --include=*.js)",
+      "Bash(npx prisma:*)",
+      "Bash(node scripts/fix-json-fields.js)",
+      "Bash(node -e \"require\\(''''module-alias/register''''\\); require\\(''''./src/utils/prisma''''\\)\")"
     ]
   }
 }
