@@ -9,20 +9,33 @@ import { path } from "@/config/path";
 import { cn } from "@/lib/utils";
 
 function LayoutContent() {
-  const { isCollapsed } = useSidebar();
+  const { isCollapsed, isMobile, mobileOpen, closeMobile } = useSidebar();
   const mainRef = useRef(null);
   const location = useLocation();
 
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
-  }, [location.pathname]);
+    closeMobile();
+  }, [location.pathname, closeMobile]);
 
   return (
     <div className="flex min-h-screen">
+      {/* Mobile backdrop */}
+      {isMobile && mobileOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60"
+          onClick={closeMobile}
+        />
+      )}
+
+      {/* Sidebar */}
       <aside
         className={cn(
-          "sticky top-0 h-screen shrink-0 overflow-y-auto border-r border-zinc-800 bg-zinc-950 transition-all duration-200",
-          isCollapsed ? "w-14" : "w-60",
+          "border-r border-zinc-800 bg-zinc-950 transition-all duration-200",
+          !isMobile && "sticky top-0 h-screen shrink-0 overflow-y-auto",
+          !isMobile && (isCollapsed ? "w-14" : "w-60"),
+          isMobile && "fixed inset-y-0 left-0 z-50 h-full w-64 overflow-y-auto",
+          isMobile && (mobileOpen ? "translate-x-0" : "-translate-x-full"),
         )}
       >
         <AppSidebar />
