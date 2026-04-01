@@ -11,4 +11,6 @@ export const path = {
     ai: "/ai",
     settings: "/settings",
   },
+
+  profile: "/profile",
 };

@@ -1,12 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import {
-  Bell,
-  Settings,
-  User,
-  KeyRound,
-  LogOut,
-} from "lucide-react";
+import { Bell, Settings, User, KeyRound, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

@@ -17,6 +17,7 @@ import ChatBotManage from "@/pages/admin/ChatBotManage";
 import SystemManage from "@/pages/admin/SystemManage";
 
 import { useGetMeQuery } from "@/services/auth.service";
+import Profile from "./pages/admin/Profile";
 
 function AuthInitializer() {
   useGetMeQuery();
@@ -44,6 +45,8 @@ function App() {
           />
           <Route path={path.admin.ai} element={<ChatBotManage />} />
           <Route path={path.admin.settings} element={<SystemManage />} />
+
+          <Route path={path.profile} element={<Profile />} />
         </Route>
 
         {/* Fallback route */}

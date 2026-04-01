@@ -6,7 +6,7 @@ export const adminService = apiSlice.injectEndpoints({
       query: () => "/admin/stats",
     }),
     getApplicationTrend: builder.query({
-      query: () => "/admin/stats/applications-trend",
+      query: ({ days = 7 } = {}) => `/admin/stats/applications-trend?days=${days}`,
     }),
     getJobsByType: builder.query({
       query: () => "/admin/stats/jobs-by-type",
