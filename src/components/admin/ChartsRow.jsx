@@ -18,6 +18,11 @@ import {
   useGetJobsByTypeQuery,
 } from "@/services/admin.service";
 import { JOB_TYPE_LABELS, PERIODS } from "@/config/admin.constants";
+import {
+  formatDateLabel,
+  getXAxisInterval,
+  intTickFormatter,
+} from "@/utils/helper";
 
 function ApplicationTrendChart({ days, onDaysChange }) {
   const { data: trendDataResponse, isFetching } = useGetApplicationTrendQuery({
@@ -83,12 +88,16 @@ function ApplicationTrendChart({ days, onDaysChange }) {
                 dataKey="date"
                 tick={{ fontSize: 10 }}
                 tickLine={false}
-                axisLine={false}
+                axisLine={true}
+                interval={getXAxisInterval(days)}
+                tickFormatter={(v) => formatDateLabel(v, days)}
               />
               <YAxis
                 tick={{ fontSize: 11 }}
                 tickLine={false}
-                axisLine={false}
+                axisLine={true}
+                allowDecimals={false}
+                tickFormatter={intTickFormatter}
               />
               <Tooltip
                 contentStyle={{
@@ -148,6 +157,8 @@ function JobsByTypeChart() {
                 tick={{ fontSize: 10 }}
                 tickLine={false}
                 axisLine={false}
+                allowDecimals={false}
+                tickFormatter={intTickFormatter}
               />
               <YAxis
                 dataKey="type"

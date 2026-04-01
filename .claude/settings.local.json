@@ -8,7 +8,10 @@
       "Bash(grep -r \"bookmark\\\\|saved.*job\\\\|favorite\" e:F8_FullStack_OfflineDự_ánSmart_Recuit_Assistant_SRAFEsrc --include=*.jsx --include=*.js)",
       "Bash(npx prisma:*)",
       "Bash(node scripts/fix-json-fields.js)",
-      "Bash(node -e \"require\\(''''module-alias/register''''\\); require\\(''''./src/utils/prisma''''\\)\")"
+      "Bash(node -e \"require\\(''''module-alias/register''''\\); require\\(''''./src/utils/prisma''''\\)\")",
+      "Bash(grep -r \"check\\\\|applied\\\\|hasApplied\" e:/F8_FullStack_Offline/Dự_án/Smart_Recuit_Assistant_SRA/BE/src --include=*.js -l)",
+      "Bash(find e:/F8_FullStack_Offline/Dự_án/Smart_Recuit_Assistant_SRA/BE/src/routes -name *.js)",
+      "Bash(xargs ls:*)"
     ]
   }
 }
