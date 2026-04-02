@@ -47,3 +47,18 @@ export const PERIODS = [
   { label: "1 tháng qua", value: 30 },
   { label: "3 tháng qua", value: 90 },
 ];
+
+export const JOB_STATUS_CONFIG = {
+  PUBLISHED: {
+    label: "Đang tuyển",
+    className: "bg-green-100 text-green-700 border-green-200",
+  },
+  DRAFT: {
+    label: "Nháp",
+    className: "bg-gray-100 text-gray-600 border-gray-200",
+  },
+  CLOSED: {
+    label: "Đã đóng",
+    className: "bg-red-100 text-red-700 border-red-200",
+  },
+};

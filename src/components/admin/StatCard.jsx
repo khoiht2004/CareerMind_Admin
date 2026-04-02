@@ -19,7 +19,7 @@ function StatCard({ title, value, icon: Icon, desc }) {
             <div className="bg-muted flex h-9 w-9 items-center justify-center rounded-lg">
               <Icon className="size-4" />
             </div>
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
@@ -39,7 +39,7 @@ function StatCard({ title, value, icon: Icon, desc }) {
                   Xóa
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
           </div>
         </div>
         <p className="text-2xl font-bold">{value}</p>

@@ -6,52 +6,78 @@ export const adminService = apiSlice.injectEndpoints({
       query: () => "/admin/stats",
     }),
     getApplicationTrend: builder.query({
-      query: ({ days = 7 } = {}) => `/admin/stats/applications-trend?days=${days}`,
+      query: ({ days = 7 } = {}) =>
+        `/admin/stats/applications-trend?days=${days}`,
     }),
     getJobsByType: builder.query({
       query: () => "/admin/stats/jobs-by-type",
     }),
     getRecentApplications: builder.query({
-      query: () => "/admin/stats/recent-applications",
+      query: ({ limit = 10 }) =>
+        `/admin/stats/recent-applications?limit=${limit}`,
     }),
     getAdminUsers: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v));
+        Object.entries(params).forEach(
+          ([k, v]) =>
+            v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
+        );
         return `/admin/users?${search.toString()}`;
       },
       providesTags: ["User"],
     }),
     updateUserRole: builder.mutation({
-      query: ({ id, role }) => ({ url: `/admin/users/${id}/role`, method: "PATCH", body: { role } }),
+      query: ({ id, role }) => ({
+        url: `/admin/users/${id}/role`,
+        method: "PATCH",
+        body: { role },
+      }),
       invalidatesTags: ["User"],
     }),
     toggleUserActive: builder.mutation({
-      query: (id) => ({ url: `/admin/users/${id}/toggle-active`, method: "PATCH" }),
+      query: (id) => ({
+        url: `/admin/users/${id}/toggle-active`,
+        method: "PATCH",
+      }),
       invalidatesTags: ["User"],
     }),
     getAdminJobs: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v));
+        Object.entries(params).forEach(
+          ([k, v]) =>
+            v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
+        );
         return `/admin/jobs?${search.toString()}`;
       },
       providesTags: ["Job"],
     }),
     updateJobStatus: builder.mutation({
-      query: ({ id, status }) => ({ url: `/admin/jobs/${id}/status`, method: "PATCH", body: { status } }),
+      query: ({ id, status }) => ({
+        url: `/admin/jobs/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
       invalidatesTags: ["Job"],
     }),
     getAdminApplications: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v));
+        Object.entries(params).forEach(
+          ([k, v]) =>
+            v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
+        );
         return `/admin/applications?${search.toString()}`;
       },
       providesTags: ["Application"],
     }),
     updateAdminApplicationStatus: builder.mutation({
-      query: ({ id, status, note }) => ({ url: `/admin/applications/${id}/status`, method: "PATCH", body: { status, note } }),
+      query: ({ id, status, note }) => ({
+        url: `/admin/applications/${id}/status`,
+        method: "PATCH",
+        body: { status, note },
+      }),
       invalidatesTags: ["Application"],
     }),
     getChatStats: builder.query({
@@ -60,7 +86,10 @@ export const adminService = apiSlice.injectEndpoints({
     getAdminChatSessions: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v));
+        Object.entries(params).forEach(
+          ([k, v]) =>
+            v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
+        );
         return `/admin/chat-sessions?${search.toString()}`;
       },
     }),

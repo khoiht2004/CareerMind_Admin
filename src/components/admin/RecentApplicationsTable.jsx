@@ -19,13 +19,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
   Select,
   SelectContent,
   SelectGroup,
@@ -35,18 +28,18 @@ import {
 } from "@/components/ui/select";
 import { useGetRecentApplicationsQuery } from "@/services/admin.service";
 import { APPLICATION_STATUS_CONFIG } from "@/config/admin.constants";
-
-const ROWS_PER_PAGE_OPTIONS = ["10", "25", "50", "100"];
+import { ROWS_PER_PAGE_OPTIONS } from "@/config/constants";
 
 function RecentApplicationsTable() {
-  const { data: recentAppsResponse } = useGetRecentApplicationsQuery();
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState("10");
+  const limit = Number(rowsPerPage);
+
+  const { data: recentAppsResponse } = useGetRecentApplicationsQuery({
+    limit,
+  });
   const allApps = recentAppsResponse?.data ?? [];
 
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState("25");
-
-  const limit = Number(rowsPerPage);
-  const totalPages = Math.max(1, Math.ceil(allApps.length / limit));
   const pagedApps = allApps.slice((page - 1) * limit, page * limit);
 
   const handleRowsChange = (value) => {
@@ -151,37 +144,15 @@ function RecentApplicationsTable() {
               </SelectTrigger>
               <SelectContent align="start">
                 <SelectGroup>
-                  {ROWS_PER_PAGE_OPTIONS.map((v) => (
-                    <SelectItem key={v} value={v}>
-                      {v}
+                  {ROWS_PER_PAGE_OPTIONS.map((page) => (
+                    <SelectItem key={page} value={page}>
+                      {page}
                     </SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
           </Field>
-
-          <div className="text-muted-foreground flex items-center gap-4 text-xs">
-            <span>
-              Trang {page} / {totalPages}
-            </span>
-            <Pagination className="mx-0 w-auto">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() => setPage((p) => Math.max(1, p - 1))}
-                    disabled={page === 1}
-                  />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                    disabled={page === totalPages}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
         </div>
       </CardContent>
     </Card>

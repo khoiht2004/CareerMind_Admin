@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import PaginationControl from "@/components/shared/Pagination";
 import {
   Select,
   SelectContent,
@@ -17,27 +18,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetAdminJobsQuery, useUpdateJobStatusMutation } from "@/services/admin.service";
-
-const JOB_TYPE_LABELS = {
-  FULL_TIME: "Toàn thời gian",
-  PART_TIME: "Bán thời gian",
-  REMOTE: "Remote",
-  INTERNSHIP: "Thực tập",
-  CONTRACT: "Hợp đồng",
-};
-
-const JOB_STATUS_CONFIG = {
-  PUBLISHED: { label: "Đang tuyển", className: "bg-green-100 text-green-700 border-green-200" },
-  DRAFT: { label: "Nháp", className: "bg-gray-100 text-gray-600 border-gray-200" },
-  CLOSED: { label: "Đã đóng", className: "bg-red-100 text-red-700 border-red-200" },
-};
+import {
+  useGetAdminJobsQuery,
+  useUpdateJobStatusMutation,
+} from "@/services/admin.service";
+import { JOB_STATUS_CONFIG, JOB_TYPE_LABELS } from "@/config/admin.constants";
 
 function JobTable({ search, type, status }) {
   const [page, setPage] = useState(1);
-  const limit = 20;
+  const limit = 10;
 
-  const { data, isFetching } = useGetAdminJobsQuery({ page, limit, search, type, status });
+  const { data, isFetching } = useGetAdminJobsQuery({
+    page,
+    limit,
+    search,
+    type,
+    status,
+  });
   const [updateStatus, { isLoading: updating }] = useUpdateJobStatusMutation();
 
   const responseData = data?.data;
@@ -64,35 +61,48 @@ function JobTable({ search, type, status }) {
             {isFetching ? (
               <TableRow>
                 <TableCell colSpan={7} className="py-10 text-center">
-                  <Loader2 className="mx-auto size-5 animate-spin text-muted-foreground" />
+                  <Loader2 className="text-muted-foreground mx-auto size-5 animate-spin" />
                 </TableCell>
               </TableRow>
             ) : jobs.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-muted-foreground py-10 text-center">
+                <TableCell
+                  colSpan={7}
+                  className="text-muted-foreground py-10 text-center"
+                >
                   Không có công việc nào
                 </TableCell>
               </TableRow>
             ) : (
               jobs.map((job) => {
                 const statusCfg = JOB_STATUS_CONFIG[job.status];
-                const poster = job.postedBy?.profile?.fullName ?? job.postedBy?.email ?? "—";
+                const poster =
+                  job.postedBy?.profile?.fullName ?? job.postedBy?.email ?? "—";
                 return (
                   <TableRow key={job.id}>
                     <TableCell>
                       <div>
                         <p className="text-sm font-medium">{job.title}</p>
-                        <p className="text-muted-foreground text-xs">{job.location}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {job.location}
+                        </p>
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">{job.company}</TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="text-xs">
+                      <Badge
+                        variant="outline"
+                        className="text-center text-[13px]"
+                      >
                         {JOB_TYPE_LABELS[job.type] ?? job.type}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm">{job._count?.applications ?? 0}</TableCell>
-                    <TableCell className="text-muted-foreground text-sm">{poster}</TableCell>
+                    <TableCell className="text-center text-sm">
+                      {job._count?.applications ?? 0}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">
+                      {poster}
+                    </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {new Date(job.createdAt).toLocaleDateString("vi-VN")}
                     </TableCell>
@@ -100,10 +110,14 @@ function JobTable({ search, type, status }) {
                       <Select
                         defaultValue={job.status}
                         disabled={updating}
-                        onValueChange={(val) => updateStatus({ id: job.id, status: val })}
+                        onValueChange={(val) =>
+                          updateStatus({ id: job.id, status: val })
+                        }
                       >
                         <SelectTrigger className="h-7 w-32 text-xs">
-                          <Badge className={`border text-xs ${statusCfg?.className}`}>
+                          <Badge
+                            className={`border text-xs ${statusCfg?.className}`}
+                          >
                             {statusCfg?.label ?? job.status}
                           </Badge>
                         </SelectTrigger>
@@ -122,21 +136,14 @@ function JobTable({ search, type, status }) {
         </Table>
       </div>
 
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">
-            Trang {page} / {totalPages} — {totalItems} công việc
-          </span>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-              Trước
-            </Button>
-            <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
-              Sau
-            </Button>
-          </div>
-        </div>
-      )}
+      {/* Pagination */}
+      <PaginationControl
+        page={page}
+        totalPages={totalPages}
+        total={totalItems}
+        itemLabel="công việc"
+        onPageChange={setPage}
+      />
     </div>
   );
 }
