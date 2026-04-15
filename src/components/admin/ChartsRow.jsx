@@ -70,20 +70,17 @@ function ApplicationTrendChart({ days, onDaysChange }) {
                 <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="hsl(var(--foreground))"
+                    stopColor="var(--chart-1)"
                     stopOpacity={0.15}
                   />
                   <stop
                     offset="95%"
-                    stopColor="hsl(var(--foreground))"
+                    stopColor="var(--chart-1)"
                     stopOpacity={0}
                   />
                 </linearGradient>
               </defs>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="hsl(var(--border))"
-              />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
               <XAxis
                 dataKey="date"
                 tick={{ fontSize: 10 }}
@@ -101,8 +98,8 @@ function ApplicationTrendChart({ days, onDaysChange }) {
               />
               <Tooltip
                 contentStyle={{
-                  background: "hsl(var(--card))",
-                  border: "1px solid hsl(var(--border))",
+                  background: "var(--card)",
+                  border: "1px solid var(--border)",
                   borderRadius: "8px",
                   fontSize: "12px",
                 }}
@@ -111,7 +108,7 @@ function ApplicationTrendChart({ days, onDaysChange }) {
               <Area
                 type="monotone"
                 dataKey="Đơn ứng tuyển"
-                stroke="hsl(var(--foreground))"
+                stroke="var(--chart-1)"
                 strokeWidth={2}
                 fill="url(#grad)"
               />
@@ -149,7 +146,7 @@ function JobsByTypeChart() {
             <BarChart data={chartData} layout="vertical">
               <CartesianGrid
                 strokeDasharray="3 3"
-                stroke="hsl(var(--border))"
+                stroke="var(--border)"
                 horizontal={false}
               />
               <XAxis
@@ -170,15 +167,15 @@ function JobsByTypeChart() {
               />
               <Tooltip
                 contentStyle={{
-                  background: "hsl(var(--card))",
-                  border: "1px solid hsl(var(--border))",
+                  background: "var(--card)",
+                  border: "1px solid var(--border)",
                   borderRadius: "8px",
                   fontSize: "12px",
                 }}
               />
               <Bar
                 dataKey="Số lượng"
-                fill="hsl(var(--foreground))"
+                fill="var(--chart-2)"
                 radius={[0, 4, 4, 0]}
               />
             </BarChart>

@@ -3,6 +3,7 @@ import { Loader2, ShieldCheck, Power } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PaginationControl from "@/components/shared/Pagination";
+import { cn } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -96,7 +97,7 @@ function CompanyTable({ search }) {
                   </TableCell>
                   <TableCell>
                     {company.isVerified ? (
-                      <Badge className="border-blue-200 bg-blue-50 text-blue-600">
+                      <Badge className="border-primary/20 bg-primary/10 text-primary">
                         <ShieldCheck className="mr-1 size-3" /> Đã xác minh
                       </Badge>
                     ) : (
@@ -112,8 +113,8 @@ function CompanyTable({ search }) {
                     <Badge
                       className={
                         company.isActive
-                          ? "border-green-200 bg-green-50 text-green-700"
-                          : "border-red-200 bg-red-50 text-red-700"
+                          ? "border-primary/20 bg-primary/10 text-primary"
+                          : "border-destructive/20 bg-destructive/10 text-destructive"
                       }
                     >
                       {company.isActive ? "Hoạt động" : "Đã khóa"}
@@ -136,7 +137,12 @@ function CompanyTable({ search }) {
                       <Button
                         size="sm"
                         variant="outline"
-                        className={`h-7 text-xs ${company.isActive ? "text-red-600 hover:text-red-700" : "text-green-600 hover:text-green-700"}`}
+                        className={cn(
+                          "h-7 text-xs",
+                          company.isActive
+                            ? "text-destructive hover:text-destructive"
+                            : "text-primary hover:text-primary",
+                        )}
                         disabled={toggling}
                         onClick={() => toggleActive(company.id)}
                       >

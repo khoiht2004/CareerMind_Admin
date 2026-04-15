@@ -3,11 +3,6 @@ import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
 import { path } from "@/config/path";
 import { useSidebar } from "@/contexts/SidebarContext";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import NavItem from "./NavItem";
 import SectionHeader from "./SectionHeader";
 import ThemeToggle from "./ThemeToggle";
@@ -21,7 +16,7 @@ function AppSidebar() {
   const [sectionOpen, setSectionOpen] = useState(true);
 
   const isAdmin = user?.role === "ADMIN";
-  const isCompanyManager =  
+  const isCompanyManager =
     user?.canCompanyManage === true && user?.companyId != null;
 
   const navItems = isCompanyManager ? COMPANY_NAV_ITEMS : ADMIN_NAV_ITEMS;
@@ -30,7 +25,7 @@ function AppSidebar() {
   return (
     <div className="flex h-full flex-col py-4">
       {/* Logo */}
-      <div className="border-b border-zinc-800 px-3 pb-4">
+      <div className="border-sidebar-border border-b px-3 pb-4">
         <Link
           to={path.admin.root}
           className={cn(
@@ -39,15 +34,17 @@ function AppSidebar() {
           )}
           title="Trang chủ"
         >
-          <div className="bg-primary text-primary-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold">
+          <div className="bg-primary text-primary-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold shadow-sm">
             SRA
           </div>
           {!isCollapsed && (
             <div className="min-w-0">
-              <p className="truncate text-sm leading-tight font-bold text-white">
+              <p className="text-sidebar-foreground truncate text-sm leading-tight font-bold">
                 Smart Recruit
               </p>
-              <p className="text-[10px] text-zinc-500">Admin Area</p>
+              <p className="text-sidebar-foreground/60 text-[10px]">
+                Admin Area
+              </p>
             </div>
           )}
         </Link>
@@ -74,61 +71,6 @@ function AppSidebar() {
           </div>
         )}
       </nav>
-
-      {/* User info */}
-      {user && (
-        <div
-          className={cn(
-            "border-t border-zinc-800 pt-3",
-            isCollapsed ? "px-1" : "px-3",
-          )}
-        >
-          {isCollapsed ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex cursor-default justify-center py-1">
-                  <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-zinc-700 text-xs font-bold text-white">
-                    {user.avatarUrl ? (
-                      <img
-                        src={user.avatarUrl}
-                        alt={user.name}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      (user.name?.[0]?.toUpperCase() ?? "U")
-                    )}
-                  </div>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                {user.name ?? user.email}
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            <div className="flex items-center gap-3 px-2 py-2">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-zinc-700 text-xs font-bold text-white">
-                {user.avatarUrl ? (
-                  <img
-                    src={user.avatarUrl}
-                    alt={user.name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  user.name?.[0]?.toUpperCase()
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-zinc-200">
-                  {user.name}
-                </p>
-                <p className="truncate text-[11px] text-zinc-500">
-                  {user.email}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Theme toggle */}
       <ThemeToggle isCollapsed={isCollapsed} />

@@ -51,7 +51,7 @@ export default function AppFooter() {
   return (
     <footer className="border-t bg-(--footer-app)">
       <div className="w-full py-6">
-        <div className="grid gap-10 grid-cols-1 px-7 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-10 px-7 lg:grid-cols-3">
           {/* Column 1 */}
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function AppFooter() {
 
               <button
                 type="submit"
-                className="group cursor-pointer bg-primary text-primary-foreground focus-visible:ring-ring inline-flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-medium shadow-sm transition-all hover:-translate-y-0.5 hover:brightness-110 focus-visible:ring-2 focus-visible:outline-none"
+                className="group bg-primary text-primary-foreground focus-visible:ring-ring inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl px-4 text-sm font-medium shadow-sm transition-all hover:-translate-y-0.5 hover:brightness-110 focus-visible:ring-2 focus-visible:outline-none"
               >
                 <span>Send</span>
                 <MoveRight className="size-4 transition-transform group-hover:translate-x-0.5" />

@@ -43,7 +43,7 @@ function CompanyDashboard() {
               {company?.name ?? "Công ty của bạn"}
             </h1>
             {company?.isVerified && (
-              <Badge className="border-blue-200 bg-blue-50 text-blue-600">
+              <Badge className="border-primary/20 bg-primary/10 text-primary">
                 <ShieldCheck className="mr-1 size-3" /> Đã xác minh
               </Badge>
             )}

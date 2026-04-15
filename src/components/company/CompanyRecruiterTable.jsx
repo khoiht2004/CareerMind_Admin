@@ -11,9 +11,9 @@ import {
 import { useGetMyCompanyPersonnelQuery } from "@/services/company.service";
 
 const ROLE_CONFIG = {
-  COMPANY: { label: "Quản lý", className: "bg-purple-50 text-purple-700 border-purple-200" },
-  RECRUITER: { label: "Recruiter", className: "bg-blue-50 text-blue-700 border-blue-200" },
-  ADMIN: { label: "Admin", className: "bg-orange-50 text-orange-700 border-orange-200" },
+  COMPANY: { label: "Quản lý", className: "bg-primary/10 text-primary border-primary/20" },
+  RECRUITER: { label: "Recruiter", className: "bg-secondary/10 text-secondary border-secondary/20" },
+  ADMIN: { label: "Admin", className: "bg-destructive/10 text-destructive border-destructive/20" },
 };
 
 function CompanyRecruiterTable() {
@@ -74,8 +74,8 @@ function CompanyRecruiterTable() {
                   </TableCell>
                   <TableCell>
                     <Badge className={person.isActive
-                      ? "border-green-200 bg-green-50 text-xs text-green-700"
-                      : "border-red-200 bg-red-50 text-xs text-red-700"}>
+                      ? "border-primary/20 bg-primary/10 text-xs text-primary"
+                      : "border-destructive/20 bg-destructive/10 text-xs text-destructive"}>
                       {person.isActive ? "Hoạt động" : "Đã khóa"}
                     </Badge>
                   </TableCell>

@@ -16,14 +16,14 @@ function StatCard({ title, value, icon: Icon, desc }) {
         <div className="flex items-center justify-between">
           <p className="text-muted-foreground text-sm">{title}</p>
           <div className="flex items-center gap-1">
-            <div className="bg-muted flex size-10 items-center justify-center rounded-lg">
+            <div className="bg-muted flex size-10 items-center border justify-center rounded-lg">
               <Icon className="size-5" />
             </div>
           </div>
         </div>
         <p className="text-2xl font-bold">{value}</p>
         <div className="mt-1 flex items-center gap-1.5">
-          <span className="inline-flex items-center text-xs font-medium text-green-600">
+          <span className="text-primary inline-flex items-center text-xs font-medium">
             <ArrowUpRight className="size-3.5" />
           </span>
           <span className="text-muted-foreground text-xs">{desc}</span>

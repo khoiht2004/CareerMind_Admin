@@ -48,7 +48,7 @@ function CompanyStatChart({ isStatsFetching, data }) {
               />
               <Bar
                 dataKey="count"
-                fill="hsl(var(--foreground))"
+                fill="var(--chart-1)"
                 radius={[4, 4, 0, 0]}
                 maxBarSize={60}
               />

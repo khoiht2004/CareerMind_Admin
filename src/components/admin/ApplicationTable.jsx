@@ -51,7 +51,7 @@ function ApplicationTable({ search, status }) {
               <TableHead>Vị trí ứng tuyển</TableHead>
               <TableHead>Công ty</TableHead>
               <TableHead>Ngày nộp</TableHead>
-              <TableHead className="text-right">Trạng thái</TableHead>
+              <TableHead className="text-center">Trạng thái</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -95,7 +95,7 @@ function ApplicationTable({ search, status }) {
                     <TableCell className="text-muted-foreground text-sm">
                       {new Date(app.createdAt).toLocaleDateString("vi-VN")}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right 123">
                       <Select
                         defaultValue={app.status}
                         disabled={updating}

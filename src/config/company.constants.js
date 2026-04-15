@@ -16,17 +16,17 @@ export const COMPANY_NAV_ITEMS = [
 ];
 
 export const COMPANY_APP_STATUS_CONFIG = {
-  PENDING: { label: "Chờ xét duyệt", className: "bg-gray-100 text-gray-600 border-gray-200" },
-  REVIEWING: { label: "Đang xem xét", className: "bg-yellow-100 text-yellow-700 border-yellow-200" },
-  INTERVIEW: { label: "Phỏng vấn", className: "bg-blue-100 text-blue-700 border-blue-200" },
-  ACCEPTED: { label: "Đã nhận", className: "bg-green-100 text-green-700 border-green-200" },
-  REJECTED: { label: "Từ chối", className: "bg-red-100 text-red-700 border-red-200" },
+  PENDING: { label: "Chờ xét duyệt", className: "bg-muted text-muted-foreground border-border" },
+  REVIEWING: { label: "Đang xem xét", className: "bg-[color:var(--accent-muted)] text-[color:var(--accent-foreground)] border-[color:var(--accent-border)]" },
+  INTERVIEW: { label: "Phỏng vấn", className: "bg-primary/10 text-primary border-primary/20" },
+  ACCEPTED: { label: "Đã nhận", className: "bg-secondary/10 text-secondary border-secondary/20" },
+  REJECTED: { label: "Từ chối", className: "bg-destructive/10 text-destructive border-destructive/20" },
 };
 
 export const COMPANY_JOB_STATUS_CONFIG = {
-  PUBLISHED: { label: "Đang tuyển", className: "bg-green-100 text-green-700 border-green-200" },
-  DRAFT: { label: "Nháp", className: "bg-gray-100 text-gray-600 border-gray-200" },
-  CLOSED: { label: "Đã đóng", className: "bg-red-100 text-red-700 border-red-200" },
+  PUBLISHED: { label: "Đang tuyển", className: "bg-primary/10 text-primary border-primary/20" },
+  DRAFT: { label: "Nháp", className: "bg-muted text-muted-foreground border-border" },
+  CLOSED: { label: "Đã đóng", className: "bg-destructive/10 text-destructive border-destructive/20" },
 };
 
 export const COMPANY_JOB_TYPE_LABELS = {

@@ -74,7 +74,7 @@ function MyProfile() {
               <p className="text-muted-foreground text-sm">{company?.email}</p>
               <div className="mt-1">
                 {company?.isVerified ? (
-                  <Badge className="border-blue-200 bg-blue-50 text-blue-600">
+                  <Badge className="border-primary/20 bg-primary/10 text-primary">
                     Đã xác minh
                   </Badge>
                 ) : (

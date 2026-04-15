@@ -17,19 +17,19 @@ function SystemManage() {
       label: "Đang chờ xử lý",
       value: stats?.pendingQueues?.toLocaleString() ?? "—",
       icon: Clock,
-      className: "text-yellow-600",
+      className: "text-[color:var(--accent)]",
     },
     {
       label: "Đã hoàn thành",
       value: stats?.processedQueues?.toLocaleString() ?? "—",
       icon: CheckCircle2,
-      className: "text-green-600",
+      className: "text-primary",
     },
     {
       label: "Thất bại",
       value: stats?.failedQueues?.toLocaleString() ?? "—",
       icon: XCircle,
-      className: "text-red-600",
+      className: "text-destructive",
     },
   ];
 

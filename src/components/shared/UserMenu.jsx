@@ -71,7 +71,7 @@ function UserMenu() {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="hover:ring-primary ml-1 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-zinc-600 text-sm font-bold text-white transition-all duration-150 hover:ring-2">
+          <button className="bg-muted border-b boder-border text-foreground ml-1 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full text-sm font-bold transition-all duration-150 hover:scale-105">
             {avatarContent}
           </button>
         </DropdownMenuTrigger>
@@ -80,7 +80,7 @@ function UserMenu() {
           {/* User info */}
           <DropdownMenuLabel className="px-3 py-3 font-normal">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-zinc-600 text-base font-bold text-white">
+              <div className="bg-muted text-foreground flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full text-base font-bold">
                 {avatarContent}
               </div>
               <div className="min-w-0">
@@ -115,7 +115,7 @@ function UserMenu() {
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
-            className="cursor-pointer gap-2.5 py-2.5 text-red-500 focus:bg-red-50 focus:text-red-500 dark:focus:bg-red-950/30"
+            className="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer gap-2.5 py-2.5"
             onClick={handleLogout}
           >
             <LogOut className="size-4" />
