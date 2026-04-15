@@ -1,12 +1,4 @@
 import { Link } from "react-router";
-import {
-  BriefcaseBusiness,
-  LayoutDashboard,
-  Users,
-  FileText,
-  Bot,
-  Settings,
-} from "lucide-react";
 import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
 import { path } from "@/config/path";
@@ -20,21 +12,20 @@ import NavItem from "./NavItem";
 import SectionHeader from "./SectionHeader";
 import ThemeToggle from "./ThemeToggle";
 import { useState } from "react";
-
-const adminNavItems = [
-  { to: path.admin.root, icon: LayoutDashboard, label: "Dashboard", end: true },
-  { to: path.admin.users, icon: Users, label: "Người dùng" },
-  { to: path.admin.jobs, icon: BriefcaseBusiness, label: "Việc làm" },
-  { to: path.admin.applications, icon: FileText, label: "Đơn ứng tuyển" },
-  { to: path.admin.ai, icon: Bot, label: "Cấu hình AI" },
-  { to: path.admin.settings, icon: Settings, label: "Cài đặt" },
-];
+import { COMPANY_NAV_ITEMS } from "@/config/company.constants";
+import { ADMIN_NAV_ITEMS } from "@/config/admin.constants";
 
 function AppSidebar() {
   const { user } = useSelector((state) => state.auth);
   const { isCollapsed } = useSidebar();
-
   const [sectionOpen, setSectionOpen] = useState(true);
+
+  const isAdmin = user?.role === "ADMIN";
+  const isCompanyManager =  
+    user?.canCompanyManage === true && user?.companyId != null;
+
+  const navItems = isCompanyManager ? COMPANY_NAV_ITEMS : ADMIN_NAV_ITEMS;
+  const sectionLabel = isAdmin ? "Quản trị hệ thống" : "Quản lý công ty";
 
   return (
     <div className="flex h-full flex-col py-4">
@@ -70,14 +61,14 @@ function AppSidebar() {
         )}
       >
         <SectionHeader
-          label="Quản trị"
+          label={sectionLabel}
           isCollapsed={isCollapsed}
           open={sectionOpen}
           onToggle={() => setSectionOpen((isOpen) => !isOpen)}
         />
         {(isCollapsed || sectionOpen) && (
           <div className="space-y-0.5">
-            {adminNavItems.map((item) => (
+            {navItems.map((item) => (
               <NavItem key={item.to} {...item} isCollapsed={isCollapsed} />
             ))}
           </div>

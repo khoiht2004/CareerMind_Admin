@@ -1,20 +1,20 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router";
 import { Loader2 } from "lucide-react";
 import AppSidebar from "@/components/shared/AppSidebar";
 import AppHeader from "@/components/shared/AppHeader";
+import AppFooter from "@/components/shared/AppFooter";
 import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
 import { path } from "@/config/path";
 import { cn } from "@/lib/utils";
 
 function LayoutContent() {
   const { isCollapsed, isMobile, mobileOpen, closeMobile } = useSidebar();
-  const mainRef = useRef(null);
   const location = useLocation();
 
   useEffect(() => {
-    mainRef.current?.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0, behavior: "auto" });
     closeMobile();
   }, [location.pathname, closeMobile]);
 
@@ -22,10 +22,7 @@ function LayoutContent() {
     <div className="flex min-h-screen">
       {/* Mobile backdrop */}
       {isMobile && mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/60"
-          onClick={closeMobile}
-        />
+        <div className="fixed inset-0 z-40 bg-black/60" onClick={closeMobile} />
       )}
 
       {/* Sidebar */}
@@ -40,12 +37,14 @@ function LayoutContent() {
       >
         <AppSidebar />
       </aside>
-
+      
+      {/* Main content */}
       <div className="flex min-w-0 flex-1 flex-col">
         <AppHeader />
-        <main ref={mainRef} className="flex-1 overflow-y-auto">
+        <main className="flex-1 min-h-[calc(100vh-3.5rem)] pb-25">
           <Outlet />
         </main>
+        <AppFooter />
       </div>
     </div>
   );
@@ -62,7 +61,10 @@ function PrivateLayout() {
     );
   }
 
-  if (!user || user.role !== "ADMIN") {
+  const isAdmin = user?.role === "ADMIN";
+  const isCompanyManager =
+    user?.canCompanyManage === true && user?.companyId != null;
+  if (!user || (!isAdmin && !isCompanyManager)) {
     return <Navigate to={path.login} replace />;
   }
 

@@ -88,7 +88,9 @@ function JobTable({ search, type, status }) {
                         </p>
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm">{job.company}</TableCell>
+                    <TableCell className="text-sm">
+                      {job.company?.name}
+                    </TableCell>
                     <TableCell>
                       <Badge
                         variant="outline"

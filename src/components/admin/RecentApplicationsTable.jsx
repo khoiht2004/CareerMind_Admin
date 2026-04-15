@@ -89,7 +89,7 @@ function RecentApplicationsTable() {
                     </TableCell>
                     <TableCell className="text-sm">{app.job?.title}</TableCell>
                     <TableCell className="text-muted-foreground text-sm">
-                      {app.job?.company}
+                      {app.job?.company?.name ?? "—"}
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {new Date(app.createdAt).toLocaleDateString("vi-VN")}

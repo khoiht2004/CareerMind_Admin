@@ -21,21 +21,20 @@ import {
   useGetAdminApplicationsQuery,
   useUpdateAdminApplicationStatusMutation,
 } from "@/services/admin.service";
-
-const STATUS_CONFIG = {
-  PENDING: { icon: Clock, label: "Chờ duyệt", className: "bg-gray-100 text-gray-600 border-gray-200" },
-  REVIEWING: { icon: Clock, label: "Đang xem xét", className: "bg-yellow-100 text-yellow-700 border-yellow-200" },
-  INTERVIEW: { icon: CheckCircle2, label: "Phỏng vấn", className: "bg-green-100 text-green-700 border-green-200" },
-  ACCEPTED: { icon: CheckCircle2, label: "Đã nhận", className: "bg-blue-100 text-blue-700 border-blue-200" },
-  REJECTED: { icon: XCircle, label: "Từ chối", className: "bg-red-100 text-red-700 border-red-200" },
-};
+import { APPLICATION_STATUS_CONFIG } from "@/config/admin.constants";
 
 function ApplicationTable({ search, status }) {
   const [page, setPage] = useState(1);
   const limit = 20;
 
-  const { data, isFetching } = useGetAdminApplicationsQuery({ page, limit, search, status });
-  const [updateStatus, { isLoading: updating }] = useUpdateAdminApplicationStatusMutation();
+  const { data, isFetching } = useGetAdminApplicationsQuery({
+    page,
+    limit,
+    search,
+    status,
+  });
+  const [updateStatus, { isLoading: updating }] =
+    useUpdateAdminApplicationStatusMutation();
 
   const responseData = data?.data;
   const applications = responseData?.data ?? [];
@@ -59,30 +58,40 @@ function ApplicationTable({ search, status }) {
             {isFetching ? (
               <TableRow>
                 <TableCell colSpan={5} className="py-10 text-center">
-                  <Loader2 className="mx-auto size-5 animate-spin text-muted-foreground" />
+                  <Loader2 className="text-muted-foreground mx-auto size-5 animate-spin" />
                 </TableCell>
               </TableRow>
             ) : applications.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-muted-foreground py-10 text-center">
+                <TableCell
+                  colSpan={5}
+                  className="text-muted-foreground py-10 text-center"
+                >
                   Không có đơn ứng tuyển nào
                 </TableCell>
               </TableRow>
             ) : (
               applications.map((app) => {
-                const cfg = STATUS_CONFIG[app.status];
+                const cfg = APPLICATION_STATUS_CONFIG[app.status];
                 const StatusIcon = cfg?.icon;
-                const candidateName = app.user?.profile?.fullName ?? app.user?.email ?? "—";
+                const candidateName =
+                  app.user?.profile?.fullName ?? app.user?.email ?? "—";
                 return (
                   <TableRow key={app.id}>
                     <TableCell>
                       <div>
                         <p className="text-sm font-medium">{candidateName}</p>
-                        <p className="text-muted-foreground text-xs">{app.user?.email}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {app.user?.email}
+                        </p>
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm font-medium">{app.job?.title}</TableCell>
-                    <TableCell className="text-muted-foreground text-sm">{app.job?.company}</TableCell>
+                    <TableCell className="text-sm font-medium">
+                      {app.job?.title}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">
+                      {app.job?.company?.name}
+                    </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {new Date(app.createdAt).toLocaleDateString("vi-VN")}
                     </TableCell>
@@ -90,17 +99,23 @@ function ApplicationTable({ search, status }) {
                       <Select
                         defaultValue={app.status}
                         disabled={updating}
-                        onValueChange={(val) => updateStatus({ id: app.id, status: val })}
+                        onValueChange={(val) =>
+                          updateStatus({ id: app.id, status: val })
+                        }
                       >
                         <SelectTrigger className="h-7 w-36 text-xs">
-                          <Badge className={`gap-1 border text-xs ${cfg?.className}`}>
+                          <Badge
+                            className={`gap-1 border text-xs ${cfg?.className}`}
+                          >
                             {StatusIcon && <StatusIcon className="size-3" />}
                             {cfg?.label ?? app.status}
                           </Badge>
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="PENDING">Chờ duyệt</SelectItem>
-                          <SelectItem value="REVIEWING">Đang xem xét</SelectItem>
+                          <SelectItem value="REVIEWING">
+                            Đang xem xét
+                          </SelectItem>
                           <SelectItem value="INTERVIEW">Phỏng vấn</SelectItem>
                           <SelectItem value="ACCEPTED">Đã nhận</SelectItem>
                           <SelectItem value="REJECTED">Từ chối</SelectItem>
@@ -121,10 +136,20 @@ function ApplicationTable({ search, status }) {
             Trang {page} / {totalPages} — {totalItems} đơn
           </span>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => p - 1)}
+            >
               Trước
             </Button>
-            <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => p + 1)}
+            >
               Sau
             </Button>
           </div>

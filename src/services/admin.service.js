@@ -96,6 +96,28 @@ export const adminService = apiSlice.injectEndpoints({
     getSystemStats: builder.query({
       query: () => "/admin/system-stats",
     }),
+    getAdminCompanies: builder.query({
+      query: (params = {}) => {
+        const search = new URLSearchParams();
+        Object.entries(params).forEach(
+          ([k, v]) => v !== undefined && v !== "" && search.set(k, v),
+        );
+        return `/admin/companies?${search.toString()}`;
+      },
+      providesTags: ["Company"],
+    }),
+    createAdminCompany: builder.mutation({
+      query: (body) => ({ url: "/admin/companies", method: "POST", body }),
+      invalidatesTags: ["Company"],
+    }),
+    verifyCompany: builder.mutation({
+      query: (id) => ({ url: `/admin/companies/${id}/verify`, method: "PUT" }),
+      invalidatesTags: ["Company"],
+    }),
+    toggleCompanyActive: builder.mutation({
+      query: (id) => ({ url: `/admin/companies/${id}/active`, method: "PUT" }),
+      invalidatesTags: ["Company"],
+    }),
   }),
 });
 
@@ -114,4 +136,8 @@ export const {
   useGetChatStatsQuery,
   useGetAdminChatSessionsQuery,
   useGetSystemStatsQuery,
+  useGetAdminCompaniesQuery,
+  useCreateAdminCompanyMutation,
+  useVerifyCompanyMutation,
+  useToggleCompanyActiveMutation,
 } = adminService;

@@ -41,21 +41,26 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       const res = await login(data).unwrap();
-      const role = res?.data?.role;
-      if (role !== "ADMIN") {
+      const result = res?.data;
+
+      const isAdmin = result?.role === "ADMIN";
+      const isCompanyManager =
+        result?.canCompanyManage === true && result?.companyId != null;
+
+      if (!isAdmin && !isCompanyManager) {
         toast.error("Bạn không có quyền truy cập trang quản trị");
         return;
       }
 
-      const accessToken = res?.data?.accessToken;
-      const refreshToken = res?.data?.refreshToken;
+      const accessToken = result?.accessToken;
+      const refreshToken = result?.refreshToken;
       if (accessToken) localStorage.setItem(TOKEN_KEY, accessToken);
       if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
       dispatch(setUser(res?.data));
 
       toast.success("Đăng nhập thành công!");
-      navigate(path.admin.root);
+      navigate(isAdmin ? path.admin.root : path.company.root);
     } catch (err) {
       toast.error(err?.data?.message ?? "Email hoặc mật khẩu không đúng");
     }
