@@ -11,6 +11,7 @@ export const path = {
     companies: "/companies",
     ai: "/ai",
     settings: "/settings",
+    permissions: "/permissions",
   },
 
   // Company manager

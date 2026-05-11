@@ -16,6 +16,7 @@ import ApplicationManage from "@/pages/admin/ApplicationManage";
 import CompanyManage from "@/pages/admin/CompanyManage";
 import ChatBotManage from "@/pages/admin/ChatBotManage";
 import SystemManage from "@/pages/admin/SystemManage";
+import PermissionManage from "@/pages/admin/PermissionManage";
 import Profile from "@/pages/admin/Profile";
 
 // Pages - Company
@@ -51,6 +52,7 @@ function App() {
           <Route path={path.admin.applications} element={<ApplicationManage />} />
           <Route path={path.admin.ai} element={<ChatBotManage />} />
           <Route path={path.admin.settings} element={<SystemManage />} />
+          <Route path={path.admin.permissions} element={<PermissionManage />} />
 
           {/* Company manager pages */}
           <Route path={path.company.root} element={<CompanyDashboard />} />

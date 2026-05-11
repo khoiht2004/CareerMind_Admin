@@ -118,6 +118,44 @@ export const adminService = apiSlice.injectEndpoints({
       query: (id) => ({ url: `/admin/companies/${id}/active`, method: "PUT" }),
       invalidatesTags: ["Company"],
     }),
+
+    // ── Queue Management ──────────────────────────────────────────────────
+    getAdminQueues: builder.query({
+      query: (params = {}) => {
+        const search = new URLSearchParams();
+        Object.entries(params).forEach(
+          ([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
+        );
+        return `/admin/queues?${search.toString()}`;
+      },
+      providesTags: ["Queue"],
+    }),
+
+    // ── Permission Management ──────────────────────────────────────────────
+    getAllPermissions: builder.query({
+      query: () => "/admin/permissions",
+      providesTags: ["Permission"],
+    }),
+    createPermission: builder.mutation({
+      query: (body) => ({ url: "/admin/permissions", method: "POST", body }),
+      invalidatesTags: ["Permission"],
+    }),
+    deletePermission: builder.mutation({
+      query: (id) => ({ url: `/admin/permissions/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Permission"],
+    }),
+    getUserPermissionDetails: builder.query({
+      query: (userId) => `/admin/users/${userId}/permissions`,
+      providesTags: (_, __, userId) => [{ type: "UserPermission", id: userId }],
+    }),
+    updateUserPermission: builder.mutation({
+      query: ({ userId, permissionId, isGranted }) => ({
+        url: `/admin/users/${userId}/permissions`,
+        method: "POST",
+        body: { permissionId, isGranted },
+      }),
+      invalidatesTags: (_, __, { userId }) => [{ type: "UserPermission", id: userId }],
+    }),
   }),
 });
 
@@ -136,8 +174,14 @@ export const {
   useGetChatStatsQuery,
   useGetAdminChatSessionsQuery,
   useGetSystemStatsQuery,
+  useGetAdminQueuesQuery,
   useGetAdminCompaniesQuery,
   useCreateAdminCompanyMutation,
   useVerifyCompanyMutation,
   useToggleCompanyActiveMutation,
+  useGetAllPermissionsQuery,
+  useCreatePermissionMutation,
+  useDeletePermissionMutation,
+  useGetUserPermissionDetailsQuery,
+  useUpdateUserPermissionMutation,
 } = adminService;
