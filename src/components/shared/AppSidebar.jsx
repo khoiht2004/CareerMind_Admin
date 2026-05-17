@@ -34,8 +34,8 @@ function AppSidebar() {
           )}
           title="Trang chủ"
         >
-          <div className="bg-primary text-primary-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold shadow-sm">
-            SRA
+          <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold shadow-sm">
+            topcv
           </div>
           {!isCollapsed && (
             <div className="min-w-0">
