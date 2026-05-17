@@ -13,17 +13,6 @@ export const ADMIN_NAV_ITEMS = [
   { to: path.admin.settings, icon: Settings, label: "Cài đặt" },
 ];
 
-export const PERMISSION_GROUP_LABELS = {
-  job: "Quản lý việc làm",
-  application: "Quản lý đơn ứng tuyển",
-  post: "Quản lý bài viết",
-  company: "Quản lý công ty",
-  profile: "Hồ sơ cá nhân",
-  user: "Quản lý người dùng",
-  // chat: "Trò chuyện & AI",
-  // system: "Hệ thống",
-};
-
 export const PROFILE_TABS = [
   { key: "profile", label: "Hồ sơ của tôi" },
   { key: "chatbot", label: "Chatbot của tôi" },

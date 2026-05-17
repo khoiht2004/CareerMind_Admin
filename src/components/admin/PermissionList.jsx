@@ -1,4 +1,4 @@
-import { Plus, Trash2, Loader2 } from "lucide-react";
+import { Plus, Trash2, Loader2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -19,8 +19,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import CreatePermissionDialog from "./CreatePermissionDialog";
-import { PERMISSION_GROUP_LABELS } from "@/config/admin.constants";
+import EditPermissionDialog from "./EditPermissionDialog";
 import { usePermissionManage } from "@/hooks/usePermissionManage";
 
 const ROLE_BADGE = {
@@ -56,28 +63,54 @@ function RoleBadges({ rolePermissions = [] }) {
 function PermissionList() {
   const {
     permissions,
+    uniqueGroups,
     grouped,
+    filterGroup,
+    setFilterGroup,
     isLoading,
     isCreating,
+    isUpdating,
     isDeleting,
     createOpen,
     setCreateOpen,
+    editTarget,
+    setEditTarget,
     deleteTarget,
     setDeleteTarget,
     handleCreate,
+    handleUpdate,
     handleDeleteConfirm,
   } = usePermissionManage();
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <p className="text-muted-foreground text-sm">
-          Tổng cộng{" "}
-          <span className="text-foreground font-medium">
-            {permissions.length}
-          </span>{" "}
-          quyền trong hệ thống
-        </p>
+      {/* Toolbar */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <p className="text-muted-foreground text-sm">
+            Tổng cộng{" "}
+            <span className="text-foreground font-medium">
+              {permissions.length}
+            </span>{" "}
+            quyền trong hệ thống
+          </p>
+
+          {/* Group filter — dynamic từ permissions hiện có */}
+          <Select value={filterGroup} onValueChange={setFilterGroup}>
+            <SelectTrigger className="w-52 h-8 text-sm">
+              <SelectValue placeholder="Lọc theo nhóm" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="__all__">Tất cả nhóm</SelectItem>
+              {uniqueGroups.map((g) => (
+                <SelectItem key={g.value} value={g.value}>
+                  {g.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         <Button size="sm" onClick={() => setCreateOpen(true)}>
           <Plus className="mr-1.5 size-4" />
           Thêm quyền
@@ -90,62 +123,74 @@ function PermissionList() {
         </div>
       ) : (
         <div className="space-y-6">
-          {Object.entries(grouped).map(([group, perms]) => (
-            <div key={group}>
-              <h3 className="text-muted-foreground mb-2 text-xs font-semibold tracking-wider uppercase">
-                {PERMISSION_GROUP_LABELS[group] ?? group}
-              </h3>
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-52">Tên quyền</TableHead>
-                      <TableHead>Mô tả</TableHead>
-                      <TableHead className="w-44">Vai trò mặc định</TableHead>
-                      <TableHead className="w-24 text-right">
-                        Hành động
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {perms.map((perm) => (
-                      <TableRow key={perm.id}>
-                        <TableCell>
-                          <Badge
-                            variant="outline"
-                            className="font-mono text-xs"
-                          >
-                            {perm.name}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground text-sm whitespace-normal">
-                          {perm.description || "—"}
-                        </TableCell>
-                        <TableCell>
-                          <RoleBadges rolePermissions={perm.rolePermissions} />
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-destructive hover:bg-destructive/10 hover:text-destructive h-7 px-2.5"
-                            onClick={() => setDeleteTarget(perm)}
-                          >
-                            <Trash2 className="mr-1.5 size-3.5" />
-                            Xóa
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-          ))}
+          {Object.entries(grouped).map(([groupValue, perms]) => {
+            const groupLabel = perms[0]?.group?.label ?? groupValue;
 
-          {permissions.length === 0 && (
+            return (
+              <div key={groupValue}>
+                <h3 className="text-muted-foreground mb-2 text-xs font-semibold tracking-wider uppercase">
+                  {groupLabel}
+                </h3>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-52">Tên quyền</TableHead>
+                        <TableHead>Mô tả</TableHead>
+                        <TableHead className="w-44">Vai trò mặc định</TableHead>
+                        <TableHead className="w-32 text-right">Hành động</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {perms.map((perm) => (
+                        <TableRow key={perm.id}>
+                          <TableCell>
+                            <Badge variant="outline" className="font-mono text-xs">
+                              {perm.name}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-muted-foreground text-sm whitespace-normal">
+                            {perm.description || "—"}
+                          </TableCell>
+                          <TableCell>
+                            <RoleBadges rolePermissions={perm.rolePermissions} />
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2.5"
+                                onClick={() => setEditTarget(perm)}
+                              >
+                                <Pencil className="mr-1.5 size-3.5" />
+                                Sửa
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-destructive hover:bg-destructive/10 hover:text-destructive h-7 px-2.5"
+                                onClick={() => setDeleteTarget(perm)}
+                              >
+                                <Trash2 className="mr-1.5 size-3.5" />
+                                Xóa
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            );
+          })}
+
+          {Object.keys(grouped).length === 0 && (
             <div className="text-muted-foreground py-12 text-center text-sm">
-              Chưa có quyền nào. Thêm quyền mới để bắt đầu.
+              {filterGroup === "__all__"
+                ? "Chưa có quyền nào. Thêm quyền mới để bắt đầu."
+                : "Không có quyền nào trong nhóm này."}
             </div>
           )}
         </div>
@@ -156,6 +201,16 @@ function PermissionList() {
         onOpenChange={setCreateOpen}
         onSubmit={handleCreate}
         isLoading={isCreating}
+        groups={uniqueGroups}
+      />
+
+      <EditPermissionDialog
+        open={!!editTarget}
+        onOpenChange={(open) => !open && setEditTarget(null)}
+        onSubmit={handleUpdate}
+        isLoading={isUpdating}
+        permission={editTarget}
+        groups={uniqueGroups}
       />
 
       <AlertDialog

@@ -140,6 +140,10 @@ export const adminService = apiSlice.injectEndpoints({
       query: (body) => ({ url: "/admin/permissions", method: "POST", body }),
       invalidatesTags: ["Permission"],
     }),
+    updatePermission: builder.mutation({
+      query: ({ id, ...body }) => ({ url: `/admin/permissions/${id}`, method: "PATCH", body }),
+      invalidatesTags: ["Permission"],
+    }),
     deletePermission: builder.mutation({
       query: (id) => ({ url: `/admin/permissions/${id}`, method: "DELETE" }),
       invalidatesTags: ["Permission"],
@@ -181,6 +185,7 @@ export const {
   useToggleCompanyActiveMutation,
   useGetAllPermissionsQuery,
   useCreatePermissionMutation,
+  useUpdatePermissionMutation,
   useDeletePermissionMutation,
   useGetUserPermissionDetailsQuery,
   useUpdateUserPermissionMutation,

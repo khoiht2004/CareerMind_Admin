@@ -15,9 +15,9 @@ export function useUserPermissionSheet(userId) {
   });
   const [updatePerm, { isLoading: isSaving }] = useUpdateUserPermissionMutation();
 
-  const allPerms = allPermsData?.data ?? [];
-  const rolePerms = userPermsData?.data?.rolePerms ?? [];
-  const userPerms = userPermsData?.data?.userPerms ?? [];
+  const allPerms = useMemo(() => allPermsData?.data ?? [], [allPermsData]);
+  const rolePerms = useMemo(() => userPermsData?.data?.rolePerms ?? [], [userPermsData]);
+  const userPerms = useMemo(() => userPermsData?.data?.userPerms ?? [], [userPermsData]);
 
   const rolePermIds = useMemo(
     () => new Set(rolePerms.map((rp) => rp.permissionId)),
@@ -46,15 +46,15 @@ export function useUserPermissionSheet(userId) {
     }
   }, [effectiveState, isFetching, userId]);
 
-  const grouped = useMemo(
-    () =>
-      allPerms.reduce((acc, perm) => {
-        if (!acc[perm.group]) acc[perm.group] = [];
-        acc[perm.group].push(perm);
-        return acc;
-      }, {}),
-    [allPerms],
-  );
+  const grouped = useMemo(() => {
+    const map = new Map();
+    for (const perm of allPerms) {
+      const key = perm.group?.value ?? "other";
+      if (!map.has(key)) map.set(key, { group: perm.group, perms: [] });
+      map.get(key).perms.push(perm);
+    }
+    return [...map.values()];
+  }, [allPerms]);
 
   const getPermMeta = useCallback(
     (permId) => ({

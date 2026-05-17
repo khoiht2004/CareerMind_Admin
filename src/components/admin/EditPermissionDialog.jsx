@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -18,9 +20,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const ROLES = [
+  { value: "ADMIN", label: "Admin" },
+  { value: "RECRUITER", label: "Recruiter" },
+  { value: "CANDIDATE", label: "Candidate" },
+];
+
 const NEW_GROUP_VALUE = "__new__";
 
-function CreatePermissionDialog({ open, onOpenChange, onSubmit, isLoading, groups = [] }) {
+function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permission, groups = [] }) {
   const {
     register,
     control,
@@ -29,11 +37,25 @@ function CreatePermissionDialog({ open, onOpenChange, onSubmit, isLoading, group
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: { name: "", group: "", customGroupValue: "", customGroupLabel: "", description: "" },
+    defaultValues: { name: "", group: "", customGroupValue: "", customGroupLabel: "", description: "", roles: [] },
   });
 
   const groupValue = watch("group");
   const isCustomGroup = groupValue === NEW_GROUP_VALUE;
+
+  useEffect(() => {
+    if (permission && open) {
+      const existingGroup = groups.find((g) => g.value === permission.group?.value);
+      reset({
+        name: permission.name ?? "",
+        description: permission.description ?? "",
+        group: existingGroup ? permission.group.value : NEW_GROUP_VALUE,
+        customGroupValue: existingGroup ? "" : (permission.group?.value ?? ""),
+        customGroupLabel: existingGroup ? "" : (permission.group?.label ?? ""),
+        roles: permission.rolePermissions?.map((rp) => rp.role) ?? [],
+      });
+    }
+  }, [permission, open, reset, groups]);
 
   const handleClose = (val) => {
     if (!val) reset();
@@ -46,26 +68,31 @@ function CreatePermissionDialog({ open, onOpenChange, onSubmit, isLoading, group
         ? { value: data.customGroupValue.trim().toLowerCase(), label: data.customGroupLabel.trim() }
         : groups.find((g) => g.value === data.group);
 
-    onSubmit({ name: data.name, group: groupObj, description: data.description });
-    reset();
+    onSubmit({
+      id: permission.id,
+      name: data.name,
+      description: data.description,
+      group: groupObj,
+      roles: data.roles,
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
-          <DialogTitle>Thêm quyền mới</DialogTitle>
+          <DialogTitle>Chỉnh sửa quyền</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onValid)} className="space-y-4">
           {/* Name + Group select */}
           <section className="flex items-start gap-x-4">
             <div className="w-full space-y-1.5">
-              <Label htmlFor="perm-name">
+              <Label htmlFor="edit-perm-name">
                 Tên quyền <span className="text-destructive">*</span>
               </Label>
               <Input
-                id="perm-name"
+                id="edit-perm-name"
                 placeholder="vd: post:job, view:report"
                 {...register("name", { required: "Tên quyền là bắt buộc" })}
               />
@@ -110,11 +137,11 @@ function CreatePermissionDialog({ open, onOpenChange, onSubmit, isLoading, group
           {isCustomGroup && (
             <div className="flex gap-x-4">
               <div className="flex-1 space-y-1.5">
-                <Label htmlFor="custom-group-value">
+                <Label htmlFor="edit-custom-group-value">
                   Định danh nhóm (value) <span className="text-destructive">*</span>
                 </Label>
                 <Input
-                  id="custom-group-value"
+                  id="edit-custom-group-value"
                   placeholder="vd: report, analytics"
                   {...register("customGroupValue", {
                     validate: (v) =>
@@ -128,11 +155,11 @@ function CreatePermissionDialog({ open, onOpenChange, onSubmit, isLoading, group
               </div>
 
               <div className="flex-1 space-y-1.5">
-                <Label htmlFor="custom-group-label">
+                <Label htmlFor="edit-custom-group-label">
                   Tên hiển thị (label) <span className="text-destructive">*</span>
                 </Label>
                 <Input
-                  id="custom-group-label"
+                  id="edit-custom-group-label"
                   placeholder="vd: Báo cáo & Thống kê"
                   {...register("customGroupLabel", {
                     validate: (v) =>
@@ -146,14 +173,57 @@ function CreatePermissionDialog({ open, onOpenChange, onSubmit, isLoading, group
             </div>
           )}
 
+          {/* Description */}
           <section className="space-y-1.5">
-            <Label htmlFor="perm-desc">Mô tả</Label>
+            <Label htmlFor="edit-perm-desc">Mô tả</Label>
             <Textarea
-              id="perm-desc"
+              id="edit-perm-desc"
               placeholder="Mô tả ngắn về quyền này..."
               rows={3}
               {...register("description")}
             />
+          </section>
+
+          {/* Default roles */}
+          <section className="space-y-2">
+            <Label>Vai trò mặc định</Label>
+            <p className="text-muted-foreground text-xs">
+              Chọn các vai trò sẽ tự động có quyền này.
+            </p>
+            <div className="flex gap-6">
+              <Controller
+                name="roles"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    {ROLES.map((role) => {
+                      const checked = field.value.includes(role.value);
+                      return (
+                        <div key={role.value} className="flex items-center gap-2">
+                          <Checkbox
+                            id={`role-${role.value}`}
+                            checked={checked}
+                            onCheckedChange={(val) => {
+                              field.onChange(
+                                val
+                                  ? [...field.value, role.value]
+                                  : field.value.filter((r) => r !== role.value),
+                              );
+                            }}
+                          />
+                          <label
+                            htmlFor={`role-${role.value}`}
+                            className="cursor-pointer text-sm select-none"
+                          >
+                            {role.label}
+                          </label>
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+              />
+            </div>
           </section>
 
           <DialogFooter>
@@ -161,7 +231,7 @@ function CreatePermissionDialog({ open, onOpenChange, onSubmit, isLoading, group
               Hủy
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Đang tạo..." : "Tạo quyền"}
+              {isLoading ? "Đang lưu..." : "Lưu thay đổi"}
             </Button>
           </DialogFooter>
         </form>
@@ -170,4 +240,4 @@ function CreatePermissionDialog({ open, onOpenChange, onSubmit, isLoading, group
   );
 }
 
-export default CreatePermissionDialog;
+export default EditPermissionDialog;

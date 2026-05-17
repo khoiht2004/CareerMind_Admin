@@ -11,7 +11,6 @@ import {
   SheetDescription,
   SheetFooter,
 } from "@/components/ui/sheet";
-import { PERMISSION_GROUP_LABELS } from "@/config/admin.constants";
 import { useUserPermissionSheet } from "@/hooks/useUserPermissionSheet";
 
 function UserPermissionSheet({ user, open, onOpenChange }) {
@@ -50,10 +49,10 @@ function UserPermissionSheet({ user, open, onOpenChange }) {
             </div>
           ) : (
             <div className="space-y-6">
-              {Object.entries(grouped).map(([group, perms]) => (
-                <div key={group}>
+              {grouped.map(({ group, perms }) => (
+                <div key={group.value}>
                   <h4 className="text-muted-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
-                    {PERMISSION_GROUP_LABELS[group] ?? group}
+                    {group.label}
                   </h4>
                   <div className="space-y-2">
                     {perms.map((perm) => {
@@ -104,7 +103,7 @@ function UserPermissionSheet({ user, open, onOpenChange }) {
                 </div>
               ))}
 
-              {Object.keys(grouped).length === 0 && (
+              {grouped.length === 0 && (
                 <p className="text-muted-foreground py-8 text-center text-sm">
                   Không có quyền nào trong hệ thống
                 </p>
