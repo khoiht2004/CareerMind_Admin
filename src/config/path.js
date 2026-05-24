@@ -7,6 +7,7 @@ export const path = {
     root: "/",
     users: "/users",
     jobs: "/jobs",
+    posts: "/posts",
     applications: "/applications",
     companies: "/companies",
     ai: "/ai",

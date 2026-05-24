@@ -8,6 +8,7 @@ export const ADMIN_NAV_ITEMS = [
   { to: path.admin.permissions, icon: ShieldCheck, label: "Phân quyền" },
   { to: path.admin.companies, icon: Building2, label: "Công ty" },
   { to: path.admin.jobs, icon: BriefcaseBusiness, label: "Việc làm" },
+  { to: path.admin.posts, icon: FileText, label: "Bài đăng" },
   { to: path.admin.applications, icon: FileText, label: "Đơn ứng tuyển" },
   { to: path.admin.ai, icon: Bot, label: "Cấu hình AI" },
   { to: path.admin.settings, icon: Settings, label: "Cài đặt" },

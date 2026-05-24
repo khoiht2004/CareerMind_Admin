@@ -12,6 +12,7 @@ import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/admin/Dashboard";
 import UserManage from "@/pages/admin/UserManage";
 import JobManage from "@/pages/admin/JobManage";
+import PostManage from "@/pages/admin/PostManage";
 import ApplicationManage from "@/pages/admin/ApplicationManage";
 import CompanyManage from "@/pages/admin/CompanyManage";
 import ChatBotManage from "@/pages/admin/ChatBotManage";
@@ -49,6 +50,7 @@ function App() {
           <Route path={path.admin.users} element={<UserManage />} />
           <Route path={path.admin.companies} element={<CompanyManage />} />
           <Route path={path.admin.jobs} element={<JobManage />} />
+          <Route path={path.admin.posts} element={<PostManage />} />
           <Route path={path.admin.applications} element={<ApplicationManage />} />
           <Route path={path.admin.ai} element={<ChatBotManage />} />
           <Route path={path.admin.settings} element={<SystemManage />} />

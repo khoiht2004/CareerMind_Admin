@@ -61,6 +61,41 @@ export const adminService = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Job"],
     }),
+    getAdminPosts: builder.query({
+      query: (params = {}) => {
+        const search = new URLSearchParams();
+        Object.entries(params).forEach(
+          ([k, v]) =>
+            v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
+        );
+        return `/admin/posts?${search.toString()}`;
+      },
+      providesTags: ["Post"],
+    }),
+    getAdminPostById: builder.query({
+      query: (id) => `/admin/posts/${id}`,
+      providesTags: (_, __, id) => [{ type: "Post", id }],
+    }),
+    createAdminPost: builder.mutation({
+      query: (body) => ({ url: "/admin/posts", method: "POST", body }),
+      invalidatesTags: ["Post"],
+    }),
+    updateAdminPost: builder.mutation({
+      query: ({ id, ...body }) => ({ url: `/admin/posts/${id}`, method: "PUT", body }),
+      invalidatesTags: ["Post"],
+    }),
+    updateAdminPostPublished: builder.mutation({
+      query: ({ id, isPublished }) => ({
+        url: `/admin/posts/${id}/published`,
+        method: "PATCH",
+        body: { isPublished },
+      }),
+      invalidatesTags: ["Post"],
+    }),
+    deleteAdminPost: builder.mutation({
+      query: (id) => ({ url: `/admin/posts/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Post"],
+    }),
     getAdminApplications: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
@@ -173,6 +208,12 @@ export const {
   useToggleUserActiveMutation,
   useGetAdminJobsQuery,
   useUpdateJobStatusMutation,
+  useGetAdminPostsQuery,
+  useGetAdminPostByIdQuery,
+  useCreateAdminPostMutation,
+  useUpdateAdminPostMutation,
+  useUpdateAdminPostPublishedMutation,
+  useDeleteAdminPostMutation,
   useGetAdminApplicationsQuery,
   useUpdateAdminApplicationStatusMutation,
   useGetChatStatsQuery,
