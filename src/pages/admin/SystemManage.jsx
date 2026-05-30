@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import {
   ListTodo,
@@ -37,21 +38,21 @@ const QUEUE_STATUS_OPTIONS = [
   { value: "ALL", label: "Tất cả trạng thái" },
   { value: "pending", label: "Đang chờ" },
   { value: "processing", label: "Đang xử lý" },
-  { value: "done", label: "Hoàn thành" },
+  { value: "completed", label: "Hoàn thành" },
   { value: "failed", label: "Thất bại" },
 ];
 
 const STATUS_BADGE = {
   pending: "bg-amber-500/10 text-amber-600 border-amber-500/20",
   processing: "bg-primary/10 text-primary border-primary/20",
-  done: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+  completed: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
   failed: "bg-destructive/10 text-destructive border-destructive/20",
 };
 
 const STATUS_LABEL = {
   pending: "Đang chờ",
   processing: "Đang xử lý",
-  done: "Hoàn thành",
+  completed: "Hoàn thành",
   failed: "Thất bại",
 };
 
@@ -80,7 +81,12 @@ function QueueTable() {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState("ALL");
 
-  const { data: response, isLoading, isFetching, refetch } = useGetAdminQueuesQuery(
+  const {
+    data: response,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetAdminQueuesQuery(
     { page, limit: 15, status },
     { pollingInterval: 30_000 },
   );
@@ -149,14 +155,16 @@ function QueueTable() {
                   let payloadPreview = "—";
                   try {
                     const obj = JSON.parse(q.payload);
-                    payloadPreview = JSON.stringify(obj).slice(0, 60) + (JSON.stringify(obj).length > 60 ? "…" : "");
+                    payloadPreview =
+                      JSON.stringify(obj).slice(0, 60) +
+                      (JSON.stringify(obj).length > 60 ? "…" : "");
                   } catch {
                     payloadPreview = String(q.payload).slice(0, 60);
                   }
 
                   return (
                     <TableRow key={q.id}>
-                      <TableCell className="font-mono text-xs text-muted-foreground">
+                      <TableCell className="text-muted-foreground font-mono text-xs">
                         #{q.id}
                       </TableCell>
                       <TableCell>
@@ -169,21 +177,25 @@ function QueueTable() {
                       </TableCell>
                       <TableCell className="text-center">
                         {q.isPriority ? (
-                          <span className="text-amber-600 font-semibold text-xs">Cao</span>
+                          <span className="text-xs font-semibold text-amber-600">
+                            Cao
+                          </span>
                         ) : (
-                          <span className="text-muted-foreground text-xs">Thường</span>
+                          <span className="text-muted-foreground text-xs">
+                            Thường
+                          </span>
                         )}
                       </TableCell>
-                      <TableCell className="max-w-48 truncate font-mono text-xs text-muted-foreground">
+                      <TableCell className="text-muted-foreground max-w-48 truncate font-mono text-xs">
                         {payloadPreview}
                       </TableCell>
-                      <TableCell className="max-w-36 truncate text-xs text-muted-foreground">
+                      <TableCell className="text-muted-foreground max-w-36 truncate text-xs">
                         {q.info ?? "—"}
                       </TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
+                      <TableCell className="text-muted-foreground text-xs">
                         {formatDateTime(q.createdAt)}
                       </TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
+                      <TableCell className="text-muted-foreground text-xs">
                         {formatDateTime(q.updatedAt)}
                       </TableCell>
                     </TableRow>
@@ -297,11 +309,13 @@ function SystemManage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 pt-0">
-          <div className="flex items-center justify-between rounded-md bg-muted/40 px-4 py-2.5 text-sm">
+          <div className="bg-muted/40 flex items-center justify-between rounded-md px-4 py-2.5 text-sm">
             <span className="text-muted-foreground">Node ENV</span>
-            <span className="font-mono font-medium">{import.meta.env.MODE}</span>
+            <span className="font-mono font-medium">
+              {import.meta.env.MODE}
+            </span>
           </div>
-          <div className="flex items-center justify-between rounded-md bg-muted/40 px-4 py-2.5 text-sm">
+          <div className="bg-muted/40 flex items-center justify-between rounded-md px-4 py-2.5 text-sm">
             <span className="text-muted-foreground">API URL</span>
             <span className="font-mono font-medium">
               {import.meta.env.VITE_API_URL ?? "—"}

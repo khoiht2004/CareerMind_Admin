@@ -6,6 +6,7 @@ import AppSidebar from "@/components/shared/AppSidebar";
 import AppHeader from "@/components/shared/AppHeader";
 import AppFooter from "@/components/shared/AppFooter";
 import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
+import { SocketProvider } from "@/contexts/SocketContext";
 import { path } from "@/config/path";
 import { cn } from "@/lib/utils";
 
@@ -69,9 +70,11 @@ function PrivateLayout() {
   }
 
   return (
-    <SidebarProvider>
-      <LayoutContent />
-    </SidebarProvider>
+    <SocketProvider>
+      <SidebarProvider>
+        <LayoutContent />
+      </SidebarProvider>
+    </SocketProvider>
   );
 }
 

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { Bell, Settings, User, KeyRound, LogOut } from "lucide-react";
+import { Settings, User, KeyRound, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,6 +18,7 @@ import {
 import { clearUser } from "@/store/slice/authSlice";
 import { path } from "@/config/path";
 import { toast } from "sonner";
+import NotificationDropdown from "./NotificationDropdown";
 
 function UserMenu() {
   const { user } = useSelector((state) => state.auth);
@@ -43,18 +44,7 @@ function UserMenu() {
 
   return (
     <div className="flex items-center gap-0.5">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-10 w-10 cursor-pointer"
-          >
-            <Bell className="size-5" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>Thông báo</TooltipContent>
-      </Tooltip>
+      <NotificationDropdown />
 
       <Tooltip>
         <TooltipTrigger asChild>
