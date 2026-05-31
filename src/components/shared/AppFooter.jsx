@@ -13,7 +13,7 @@ const footerLinks = [
   {
     title: "Resources",
     links: [
-      { label: "About Smart Recruit", href: "#" },
+      { label: "About CareerMind", href: "#" },
       { label: "Help center", href: "#" },
       { label: "Privacy policy", href: "#" },
       { label: "Terms of service", href: "#" },
@@ -56,11 +56,11 @@ export default function AppFooter() {
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center gap-2">
               <div className="bg-muted grid size-10 place-items-center rounded-md border text-sm font-semibold">
-                SRA
+                CM
               </div>
               <div className="leading-tight">
                 <div className="text-md font-semibold tracking-tight">
-                  Smart Recruit
+                  CareerMind
                 </div>
                 <div className="text-muted-foreground text-xs">
                   Hire smarter. Apply faster.
@@ -130,7 +130,7 @@ export default function AppFooter() {
         {/* Footer bottom */}
         <div className="mt-10 flex flex-col gap-3 border-t px-7 pt-6 md:flex-row md:items-center md:justify-between">
           <div className="text-muted-foreground text-xs">
-            © {new Date().getFullYear()} Smart Recruit. All rights reserved.
+            © {new Date().getFullYear()} CareerMind. All rights reserved.
           </div>
 
           <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs">

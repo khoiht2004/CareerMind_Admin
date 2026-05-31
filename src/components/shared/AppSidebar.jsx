@@ -35,16 +35,14 @@ function AppSidebar() {
           title="Trang chủ"
         >
           <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold shadow-sm">
-            topcv
+            CM
           </div>
           {!isCollapsed && (
             <div className="min-w-0">
               <p className="text-sidebar-foreground truncate text-sm leading-tight font-bold">
-                Smart Recruit
+                CareerMind
               </p>
-              <p className="text-sidebar-foreground/60 text-[10px]">
-                Admin Area
-              </p>
+              <p className="text-sidebar-foreground/60 text-[10px]">Admin</p>
             </div>
           )}
         </Link>
