@@ -61,6 +61,10 @@ export const adminService = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Job"],
     }),
+    deleteAdminJob: builder.mutation({
+      query: (id) => ({ url: `/admin/jobs/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Job", "Application"],
+    }),
     getAdminPosts: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
@@ -81,7 +85,11 @@ export const adminService = apiSlice.injectEndpoints({
       invalidatesTags: ["Post"],
     }),
     updateAdminPost: builder.mutation({
-      query: ({ id, ...body }) => ({ url: `/admin/posts/${id}`, method: "PUT", body }),
+      query: ({ id, ...body }) => ({
+        url: `/admin/posts/${id}`,
+        method: "PUT",
+        body,
+      }),
       invalidatesTags: ["Post"],
     }),
     updateAdminPostPublished: builder.mutation({
@@ -114,6 +122,10 @@ export const adminService = apiSlice.injectEndpoints({
         body: { status, note },
       }),
       invalidatesTags: ["Application"],
+    }),
+    deleteAdminApplication: builder.mutation({
+      query: (id) => ({ url: `/admin/applications/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Application", "Job"],
     }),
     getChatStats: builder.query({
       query: () => "/admin/chat-stats",
@@ -159,7 +171,8 @@ export const adminService = apiSlice.injectEndpoints({
       query: (params = {}) => {
         const search = new URLSearchParams();
         Object.entries(params).forEach(
-          ([k, v]) => v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
+          ([k, v]) =>
+            v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
         );
         return `/admin/queues?${search.toString()}`;
       },
@@ -176,7 +189,11 @@ export const adminService = apiSlice.injectEndpoints({
       invalidatesTags: ["Permission"],
     }),
     updatePermission: builder.mutation({
-      query: ({ id, ...body }) => ({ url: `/admin/permissions/${id}`, method: "PATCH", body }),
+      query: ({ id, ...body }) => ({
+        url: `/admin/permissions/${id}`,
+        method: "PATCH",
+        body,
+      }),
       invalidatesTags: ["Permission"],
     }),
     deletePermission: builder.mutation({
@@ -193,7 +210,9 @@ export const adminService = apiSlice.injectEndpoints({
         method: "POST",
         body: { permissionId, isGranted },
       }),
-      invalidatesTags: (_, __, { userId }) => [{ type: "UserPermission", id: userId }],
+      invalidatesTags: (_, __, { userId }) => [
+        { type: "UserPermission", id: userId },
+      ],
     }),
   }),
 });
@@ -208,6 +227,7 @@ export const {
   useToggleUserActiveMutation,
   useGetAdminJobsQuery,
   useUpdateJobStatusMutation,
+  useDeleteAdminJobMutation,
   useGetAdminPostsQuery,
   useGetAdminPostByIdQuery,
   useCreateAdminPostMutation,
@@ -216,6 +236,7 @@ export const {
   useDeleteAdminPostMutation,
   useGetAdminApplicationsQuery,
   useUpdateAdminApplicationStatusMutation,
+  useDeleteAdminApplicationMutation,
   useGetChatStatsQuery,
   useGetAdminChatSessionsQuery,
   useGetSystemStatsQuery,

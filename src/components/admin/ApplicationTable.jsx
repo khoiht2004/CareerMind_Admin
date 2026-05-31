@@ -1,7 +1,18 @@
 import { useState } from "react";
-import { Clock, CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   Select,
   SelectContent,
@@ -18,6 +29,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  useDeleteAdminApplicationMutation,
   useGetAdminApplicationsQuery,
   useUpdateAdminApplicationStatusMutation,
 } from "@/services/admin.service";
@@ -25,6 +37,7 @@ import { APPLICATION_STATUS_CONFIG } from "@/config/admin.constants";
 
 function ApplicationTable({ search, status }) {
   const [page, setPage] = useState(1);
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const limit = 20;
 
   const { data, isFetching } = useGetAdminApplicationsQuery({
@@ -35,36 +48,60 @@ function ApplicationTable({ search, status }) {
   });
   const [updateStatus, { isLoading: updating }] =
     useUpdateAdminApplicationStatusMutation();
+  const [deleteApplication, { isLoading: deleting }] =
+    useDeleteAdminApplicationMutation();
 
   const responseData = data?.data;
   const applications = responseData?.data ?? [];
   const totalPages = responseData?.totalPages ?? 1;
   const totalItems = responseData?.total ?? 0;
 
+  const handleUpdateStatus = async (id, nextStatus) => {
+    try {
+      await updateStatus({ id, status: nextStatus }).unwrap();
+      toast.success("Cập nhật trạng thái đơn ứng tuyển thành công");
+    } catch (error) {
+      toast.error(error?.data?.message ?? "Không thể cập nhật trạng thái");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+
+    try {
+      await deleteApplication(deleteTarget.id).unwrap();
+      toast.success("Đã xóa đơn ứng tuyển");
+      setDeleteTarget(null);
+    } catch (error) {
+      toast.error(error?.data?.message ?? "Không thể xóa đơn ứng tuyển");
+    }
+  };
+
   return (
     <div className="space-y-3">
       <div className="overflow-x-auto rounded-md border">
-        <Table className="min-w-[760px]">
+        <Table className="min-w-[820px]">
           <TableHeader>
             <TableRow>
               <TableHead>Ứng viên</TableHead>
               <TableHead>Vị trí ứng tuyển</TableHead>
               <TableHead>Công ty</TableHead>
               <TableHead>Ngày nộp</TableHead>
-              <TableHead className="text-center">Trạng thái</TableHead>
+              <TableHead className="text-right">Trạng thái</TableHead>
+              <TableHead className="text-right">Thao tác</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isFetching ? (
               <TableRow>
-                <TableCell colSpan={5} className="py-10 text-center">
+                <TableCell colSpan={6} className="py-10 text-center">
                   <Loader2 className="text-muted-foreground mx-auto size-5 animate-spin" />
                 </TableCell>
               </TableRow>
             ) : applications.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={5}
+                  colSpan={6}
                   className="text-muted-foreground py-10 text-center"
                 >
                   Không có đơn ứng tuyển nào
@@ -75,7 +112,8 @@ function ApplicationTable({ search, status }) {
                 const cfg = APPLICATION_STATUS_CONFIG[app.status];
                 const StatusIcon = cfg?.icon;
                 const candidateName =
-                  app.user?.profile?.fullName ?? app.user?.email ?? "—";
+                  app.user?.profile?.fullName ?? app.user?.email ?? "-";
+
                 return (
                   <TableRow key={app.id}>
                     <TableCell>
@@ -99,9 +137,7 @@ function ApplicationTable({ search, status }) {
                       <Select
                         defaultValue={app.status}
                         disabled={updating}
-                        onValueChange={(val) =>
-                          updateStatus({ id: app.id, status: val })
-                        }
+                        onValueChange={(val) => handleUpdateStatus(app.id, val)}
                       >
                         <SelectTrigger className="h-7 w-36 text-xs">
                           <Badge
@@ -122,6 +158,18 @@ function ApplicationTable({ search, status }) {
                         </SelectContent>
                       </Select>
                     </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-destructive hover:bg-destructive/10 hover:text-destructive h-8 w-8"
+                        disabled={deleting}
+                        onClick={() => setDeleteTarget(app)}
+                        title="Xóa đơn ứng tuyển"
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 );
               })
@@ -133,7 +181,7 @@ function ApplicationTable({ search, status }) {
       {totalPages > 1 && (
         <div className="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
           <span className="text-muted-foreground">
-            Trang {page} / {totalPages} — {totalItems} đơn
+            Trang {page} / {totalPages} - {totalItems} đơn
           </span>
           <div className="flex gap-2">
             <Button
@@ -155,6 +203,31 @@ function ApplicationTable({ search, status }) {
           </div>
         </div>
       )}
+
+      <AlertDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Xóa đơn ứng tuyển?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Đơn ứng tuyển của "{deleteTarget?.user?.email}" cho vị trí "
+              {deleteTarget?.job?.title}" sẽ bị xóa khỏi hệ thống.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Hủy</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={deleting}
+              onClick={handleDelete}
+            >
+              {deleting ? "Đang xóa..." : "Xóa đơn"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
