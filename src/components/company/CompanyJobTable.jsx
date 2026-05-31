@@ -11,13 +11,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useGetMyCompanyJobsQuery } from "@/services/company.service";
-import { COMPANY_JOB_STATUS_CONFIG, COMPANY_JOB_TYPE_LABELS } from "@/config/company.constants";
+import {
+  COMPANY_JOB_STATUS_CONFIG,
+  COMPANY_JOB_TYPE_LABELS,
+} from "@/config/company.constants";
 
 function CompanyJobTable({ search, status }) {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  const { data, isFetching } = useGetMyCompanyJobsQuery({ page, limit, search, status });
+  const { data, isFetching } = useGetMyCompanyJobsQuery({
+    page,
+    limit,
+    search,
+    status,
+  });
 
   const responseData = data?.data;
   const jobs = responseData?.jobs ?? [];
@@ -26,8 +34,8 @@ function CompanyJobTable({ search, status }) {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[760px]">
           <TableHeader>
             <TableRow>
               <TableHead>Vị trí</TableHead>
@@ -48,20 +56,26 @@ function CompanyJobTable({ search, status }) {
               </TableRow>
             ) : jobs.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-muted-foreground py-10 text-center">
+                <TableCell
+                  colSpan={7}
+                  className="text-muted-foreground py-10 text-center"
+                >
                   Không có việc làm nào
                 </TableCell>
               </TableRow>
             ) : (
               jobs.map((job) => {
                 const statusCfg = COMPANY_JOB_STATUS_CONFIG[job.status];
-                const poster = job.postedBy?.profile?.fullName ?? job.postedBy?.email ?? "—";
+                const poster =
+                  job.postedBy?.profile?.fullName ?? job.postedBy?.email ?? "—";
                 return (
                   <TableRow key={job.id}>
                     <TableCell>
                       <div>
                         <p className="text-sm font-medium">{job.title}</p>
-                        <p className="text-muted-foreground text-xs">{job.location}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {job.location}
+                        </p>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -69,18 +83,24 @@ function CompanyJobTable({ search, status }) {
                         {COMPANY_JOB_TYPE_LABELS[job.type] ?? job.type}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-sm">{poster}</TableCell>
+                    <TableCell className="text-muted-foreground text-sm">
+                      {poster}
+                    </TableCell>
                     <TableCell className="text-center text-sm">
                       {job._count?.applications ?? 0}
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
-                      {job.deadline ? new Date(job.deadline).toLocaleDateString("vi-VN") : "—"}
+                      {job.deadline
+                        ? new Date(job.deadline).toLocaleDateString("vi-VN")
+                        : "—"}
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {new Date(job.createdAt).toLocaleDateString("vi-VN")}
                     </TableCell>
                     <TableCell>
-                      <Badge className={`border text-xs ${statusCfg?.className}`}>
+                      <Badge
+                        className={`border text-xs ${statusCfg?.className}`}
+                      >
                         {statusCfg?.label ?? job.status}
                       </Badge>
                     </TableCell>

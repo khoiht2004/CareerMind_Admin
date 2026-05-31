@@ -102,10 +102,10 @@ function QueueTable() {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <Select value={status} onValueChange={handleStatusChange}>
-            <SelectTrigger className="w-44">
+            <SelectTrigger className="w-full sm:w-44">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -136,8 +136,8 @@ function QueueTable() {
         </p>
       ) : (
         <>
-          <div className="rounded-md border">
-            <Table>
+          <div className="overflow-x-auto rounded-md border">
+            <Table className="min-w-[980px]">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-16">ID</TableHead>
@@ -205,7 +205,7 @@ function QueueTable() {
             </Table>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-muted-foreground text-sm">
               Tổng{" "}
               <span className="text-foreground font-medium">
@@ -258,7 +258,7 @@ function SystemManage() {
   ];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Cài đặt hệ thống</h1>
         <p className="text-muted-foreground mt-1 text-sm">
@@ -272,7 +272,7 @@ function SystemManage() {
           <Database className="size-4" />
           Hàng đợi tác vụ (Queue)
         </h2>
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {queueCards.map(({ label, value, icon: Icon, className }) => (
             <Card key={label}>
               <CardContent className="p-5">
@@ -295,7 +295,7 @@ function SystemManage() {
             Danh sách tác vụ trong hàng đợi
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-3 sm:px-6">
           <QueueTable />
         </CardContent>
       </Card>
@@ -309,13 +309,13 @@ function SystemManage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 pt-0">
-          <div className="bg-muted/40 flex items-center justify-between rounded-md px-4 py-2.5 text-sm">
+          <div className="bg-muted/40 flex flex-col gap-1 rounded-md px-4 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between">
             <span className="text-muted-foreground">Node ENV</span>
             <span className="font-mono font-medium">
               {import.meta.env.MODE}
             </span>
           </div>
-          <div className="bg-muted/40 flex items-center justify-between rounded-md px-4 py-2.5 text-sm">
+          <div className="bg-muted/40 flex flex-col gap-1 rounded-md px-4 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between">
             <span className="text-muted-foreground">API URL</span>
             <span className="font-mono font-medium">
               {import.meta.env.VITE_API_URL ?? "—"}

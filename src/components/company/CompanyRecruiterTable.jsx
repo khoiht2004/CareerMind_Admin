@@ -11,9 +11,18 @@ import {
 import { useGetMyCompanyPersonnelQuery } from "@/services/company.service";
 
 const ROLE_CONFIG = {
-  COMPANY: { label: "Quản lý", className: "bg-primary/10 text-primary border-primary/20" },
-  RECRUITER: { label: "Recruiter", className: "bg-secondary/10 text-secondary border-secondary/20" },
-  ADMIN: { label: "Admin", className: "bg-destructive/10 text-destructive border-destructive/20" },
+  COMPANY: {
+    label: "Quản lý",
+    className: "bg-primary/10 text-primary border-primary/20",
+  },
+  RECRUITER: {
+    label: "Recruiter",
+    className: "bg-secondary/10 text-secondary border-secondary/20",
+  },
+  ADMIN: {
+    label: "Admin",
+    className: "bg-destructive/10 text-destructive border-destructive/20",
+  },
 };
 
 function CompanyRecruiterTable() {
@@ -21,8 +30,8 @@ function CompanyRecruiterTable() {
   const personnel = response?.data ?? [];
 
   return (
-    <div className="rounded-md border">
-      <Table>
+    <div className="overflow-x-auto rounded-md border">
+      <Table className="min-w-[720px]">
         <TableHeader>
           <TableRow>
             <TableHead>Nhân sự</TableHead>
@@ -41,7 +50,10 @@ function CompanyRecruiterTable() {
             </TableRow>
           ) : personnel.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={5} className="text-muted-foreground py-10 text-center">
+              <TableCell
+                colSpan={5}
+                className="text-muted-foreground py-10 text-center"
+              >
                 Chưa có nhân sự nào
               </TableCell>
             </TableRow>
@@ -54,13 +66,21 @@ function CompanyRecruiterTable() {
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <div className="bg-muted flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full text-xs font-bold">
-                        {person.profile?.avatarUrl
-                          ? <img src={person.profile.avatarUrl} alt={name} className="h-full w-full object-cover" />
-                          : name[0]?.toUpperCase()}
+                        {person.profile?.avatarUrl ? (
+                          <img
+                            src={person.profile.avatarUrl}
+                            alt={name}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          name[0]?.toUpperCase()
+                        )}
                       </div>
                       <div>
                         <p className="text-sm font-medium">{name}</p>
-                        <p className="text-muted-foreground text-xs">{person.email}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {person.email}
+                        </p>
                       </div>
                     </div>
                   </TableCell>
@@ -73,9 +93,13 @@ function CompanyRecruiterTable() {
                     {person.profile?.phone ?? "—"}
                   </TableCell>
                   <TableCell>
-                    <Badge className={person.isActive
-                      ? "border-primary/20 bg-primary/10 text-xs text-primary"
-                      : "border-destructive/20 bg-destructive/10 text-xs text-destructive"}>
+                    <Badge
+                      className={
+                        person.isActive
+                          ? "border-primary/20 bg-primary/10 text-primary text-xs"
+                          : "border-destructive/20 bg-destructive/10 text-destructive text-xs"
+                      }
+                    >
                       {person.isActive ? "Hoạt động" : "Đã khóa"}
                     </Badge>
                   </TableCell>

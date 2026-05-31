@@ -4,7 +4,7 @@ import UserPermissionTable from "@/components/admin/UserPermissionTable";
 
 function PermissionManage() {
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Quản lý phân quyền</h1>
         <p className="text-muted-foreground mt-1 text-sm">

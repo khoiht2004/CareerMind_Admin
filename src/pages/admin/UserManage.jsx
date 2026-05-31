@@ -15,7 +15,7 @@ function UserManage() {
   const [role, setRole] = useState("ALL");
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Quản lý người dùng</h1>
         <p className="text-muted-foreground mt-1 text-sm">
@@ -24,8 +24,8 @@ function UserManage() {
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-3">
-        <div className="relative max-w-sm flex-1">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative w-full sm:max-w-sm sm:flex-1">
           <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             placeholder="Tìm theo tên hoặc email..."
@@ -35,7 +35,7 @@ function UserManage() {
           />
         </div>
         <Select value={role} onValueChange={setRole}>
-          <SelectTrigger className="w-44">
+          <SelectTrigger className="w-full sm:w-44">
             <SelectValue placeholder="Tất cả vai trò" />
           </SelectTrigger>
           <SelectContent>

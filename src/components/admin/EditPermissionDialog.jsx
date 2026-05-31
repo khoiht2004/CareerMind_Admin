@@ -28,7 +28,14 @@ const ROLES = [
 
 const NEW_GROUP_VALUE = "__new__";
 
-function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permission, groups = [] }) {
+function EditPermissionDialog({
+  open,
+  onOpenChange,
+  onSubmit,
+  isLoading,
+  permission,
+  groups = [],
+}) {
   const {
     register,
     control,
@@ -37,7 +44,14 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: { name: "", group: "", customGroupValue: "", customGroupLabel: "", description: "", roles: [] },
+    defaultValues: {
+      name: "",
+      group: "",
+      customGroupValue: "",
+      customGroupLabel: "",
+      description: "",
+      roles: [],
+    },
   });
 
   const groupValue = watch("group");
@@ -45,7 +59,9 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
 
   useEffect(() => {
     if (permission && open) {
-      const existingGroup = groups.find((g) => g.value === permission.group?.value);
+      const existingGroup = groups.find(
+        (g) => g.value === permission.group?.value,
+      );
       reset({
         name: permission.name ?? "",
         description: permission.description ?? "",
@@ -65,7 +81,10 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
   const onValid = (data) => {
     const groupObj =
       data.group === NEW_GROUP_VALUE
-        ? { value: data.customGroupValue.trim().toLowerCase(), label: data.customGroupLabel.trim() }
+        ? {
+            value: data.customGroupValue.trim().toLowerCase(),
+            label: data.customGroupLabel.trim(),
+          }
         : groups.find((g) => g.value === data.group);
 
     onSubmit({
@@ -79,14 +98,14 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[700px]">
+      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[700px]">
         <DialogHeader>
           <DialogTitle>Chỉnh sửa quyền</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onValid)} className="space-y-4">
           {/* Name + Group select */}
-          <section className="flex items-start gap-x-4">
+          <section className="flex flex-col gap-4 sm:flex-row sm:items-start">
             <div className="w-full space-y-1.5">
               <Label htmlFor="edit-perm-name">
                 Tên quyền <span className="text-destructive">*</span>
@@ -97,7 +116,9 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
                 {...register("name", { required: "Tên quyền là bắt buộc" })}
               />
               {errors.name && (
-                <p className="text-destructive text-xs">{errors.name.message}</p>
+                <p className="text-destructive text-xs">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -111,7 +132,7 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
                 rules={{ required: "Nhóm là bắt buộc" }}
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="w-48">
+                    <SelectTrigger className="w-full sm:w-48">
                       <SelectValue placeholder="Chọn nhóm quyền" />
                     </SelectTrigger>
                     <SelectContent>
@@ -128,46 +149,60 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
                 )}
               />
               {errors.group && (
-                <p className="text-destructive text-xs">{errors.group.message}</p>
+                <p className="text-destructive text-xs">
+                  {errors.group.message}
+                </p>
               )}
             </div>
           </section>
 
           {/* New group: value + label side by side */}
           {isCustomGroup && (
-            <div className="flex gap-x-4">
+            <div className="flex flex-col gap-4 sm:flex-row">
               <div className="flex-1 space-y-1.5">
                 <Label htmlFor="edit-custom-group-value">
-                  Định danh nhóm (value) <span className="text-destructive">*</span>
+                  Định danh nhóm (value){" "}
+                  <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="edit-custom-group-value"
                   placeholder="vd: report, analytics"
                   {...register("customGroupValue", {
                     validate: (v) =>
-                      !isCustomGroup || v.trim().length > 0 || "Định danh không được để trống",
+                      !isCustomGroup ||
+                      v.trim().length > 0 ||
+                      "Định danh không được để trống",
                   })}
                 />
                 {errors.customGroupValue && (
-                  <p className="text-destructive text-xs">{errors.customGroupValue.message}</p>
+                  <p className="text-destructive text-xs">
+                    {errors.customGroupValue.message}
+                  </p>
                 )}
-                <p className="text-muted-foreground text-xs">Dùng để lọc, không dấu, chữ thường.</p>
+                <p className="text-muted-foreground text-xs">
+                  Dùng để lọc, không dấu, chữ thường.
+                </p>
               </div>
 
               <div className="flex-1 space-y-1.5">
                 <Label htmlFor="edit-custom-group-label">
-                  Tên hiển thị (label) <span className="text-destructive">*</span>
+                  Tên hiển thị (label){" "}
+                  <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="edit-custom-group-label"
                   placeholder="vd: Báo cáo & Thống kê"
                   {...register("customGroupLabel", {
                     validate: (v) =>
-                      !isCustomGroup || v.trim().length > 0 || "Tên hiển thị không được để trống",
+                      !isCustomGroup ||
+                      v.trim().length > 0 ||
+                      "Tên hiển thị không được để trống",
                   })}
                 />
                 {errors.customGroupLabel && (
-                  <p className="text-destructive text-xs">{errors.customGroupLabel.message}</p>
+                  <p className="text-destructive text-xs">
+                    {errors.customGroupLabel.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -190,7 +225,7 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
             <p className="text-muted-foreground text-xs">
               Chọn các vai trò sẽ tự động có quyền này.
             </p>
-            <div className="flex gap-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-6">
               <Controller
                 name="roles"
                 control={control}
@@ -199,7 +234,10 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
                     {ROLES.map((role) => {
                       const checked = field.value.includes(role.value);
                       return (
-                        <div key={role.value} className="flex items-center gap-2">
+                        <div
+                          key={role.value}
+                          className="flex items-center gap-2"
+                        >
                           <Checkbox
                             id={`role-${role.value}`}
                             checked={checked}
@@ -227,7 +265,11 @@ function EditPermissionDialog({ open, onOpenChange, onSubmit, isLoading, permiss
           </section>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => handleClose(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleClose(false)}
+            >
               Hủy
             </Button>
             <Button type="submit" disabled={isLoading}>

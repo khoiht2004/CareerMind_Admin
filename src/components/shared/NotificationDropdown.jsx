@@ -75,7 +75,7 @@ function NotificationDropdown() {
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="bg-muted/70 hover:bg-muted relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-colors outline-none"
+          className="bg-muted/70 hover:bg-muted relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-colors outline-none sm:h-10 sm:w-10"
           aria-label="Thông báo"
         >
           <Bell className="size-5 text-slate-700" />
@@ -90,7 +90,7 @@ function NotificationDropdown() {
       <DropdownMenuContent
         align="end"
         sideOffset={10}
-        className="shadow-popover-soft w-[360px] overflow-hidden rounded-xl p-0 sm:w-[400px]"
+        className="shadow-popover-soft w-[calc(100vw-1rem)] max-w-[400px] overflow-hidden rounded-xl p-0"
       >
         {/* Header */}
         <div className="bg-muted/50 flex items-center justify-between border-b px-4 py-3">
@@ -109,7 +109,7 @@ function NotificationDropdown() {
         </div>
 
         {/* Content list */}
-        <ScrollArea className="h-[360px]">
+        <ScrollArea className="h-[min(360px,calc(100svh-9rem))]">
           {isLoading ? (
             <div className="flex h-[300px] items-center justify-center">
               <Loader2 className="text-muted-foreground size-6 animate-spin" />

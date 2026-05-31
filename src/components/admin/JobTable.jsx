@@ -44,8 +44,8 @@ function JobTable({ search, type, status }) {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[900px]">
           <TableHeader>
             <TableRow>
               <TableHead>Vị trí</TableHead>

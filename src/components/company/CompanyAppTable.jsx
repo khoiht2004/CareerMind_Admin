@@ -17,7 +17,11 @@ function CompanyAppTable({ status }) {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  const { data, isFetching } = useGetMyCompanyApplicationsQuery({ page, limit, status });
+  const { data, isFetching } = useGetMyCompanyApplicationsQuery({
+    page,
+    limit,
+    status,
+  });
 
   const responseData = data?.data;
   const applications = responseData?.applications ?? [];
@@ -26,8 +30,8 @@ function CompanyAppTable({ status }) {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[760px]">
           <TableHeader>
             <TableRow>
               <TableHead>Ứng viên</TableHead>
@@ -46,26 +50,38 @@ function CompanyAppTable({ status }) {
               </TableRow>
             ) : applications.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-muted-foreground py-10 text-center">
+                <TableCell
+                  colSpan={5}
+                  className="text-muted-foreground py-10 text-center"
+                >
                   Không có đơn ứng tuyển nào
                 </TableCell>
               </TableRow>
             ) : (
               applications.map((app) => {
                 const cfg = COMPANY_APP_STATUS_CONFIG[app.status];
-                const name = app.user?.profile?.fullName ?? app.user?.email ?? "—";
+                const name =
+                  app.user?.profile?.fullName ?? app.user?.email ?? "—";
                 return (
                   <TableRow key={app.id}>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <div className="bg-muted flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full text-xs font-bold">
-                          {app.user?.profile?.avatarUrl
-                            ? <img src={app.user.profile.avatarUrl} alt={name} className="h-full w-full object-cover" />
-                            : name[0]?.toUpperCase()}
+                          {app.user?.profile?.avatarUrl ? (
+                            <img
+                              src={app.user.profile.avatarUrl}
+                              alt={name}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            name[0]?.toUpperCase()
+                          )}
                         </div>
                         <div>
                           <p className="text-sm font-medium">{name}</p>
-                          <p className="text-muted-foreground text-xs">{app.user?.email}</p>
+                          <p className="text-muted-foreground text-xs">
+                            {app.user?.email}
+                          </p>
                         </div>
                       </div>
                     </TableCell>

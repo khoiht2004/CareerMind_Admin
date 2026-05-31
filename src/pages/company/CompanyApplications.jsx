@@ -12,7 +12,7 @@ function CompanyApplications() {
   const [status, setStatus] = useState("ALL");
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Đơn ứng tuyển</h1>
         <p className="text-muted-foreground mt-1 text-sm">
@@ -20,9 +20,9 @@ function CompanyApplications() {
         </p>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <Select value={status} onValueChange={setStatus}>
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="w-full sm:w-48">
             <SelectValue placeholder="Tất cả trạng thái" />
           </SelectTrigger>
           <SelectContent>

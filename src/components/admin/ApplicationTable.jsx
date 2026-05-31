@@ -43,8 +43,8 @@ function ApplicationTable({ search, status }) {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[760px]">
           <TableHeader>
             <TableRow>
               <TableHead>Ứng viên</TableHead>
@@ -95,7 +95,7 @@ function ApplicationTable({ search, status }) {
                     <TableCell className="text-muted-foreground text-sm">
                       {new Date(app.createdAt).toLocaleDateString("vi-VN")}
                     </TableCell>
-                    <TableCell className="text-right 123">
+                    <TableCell className="text-right">
                       <Select
                         defaultValue={app.status}
                         disabled={updating}
@@ -131,7 +131,7 @@ function ApplicationTable({ search, status }) {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
           <span className="text-muted-foreground">
             Trang {page} / {totalPages} — {totalItems} đơn
           </span>

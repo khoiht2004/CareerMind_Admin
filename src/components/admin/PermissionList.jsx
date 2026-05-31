@@ -85,8 +85,8 @@ function PermissionList() {
   return (
     <div className="space-y-4">
       {/* Toolbar */}
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <p className="text-muted-foreground text-sm">
             Tổng cộng{" "}
             <span className="text-foreground font-medium">
@@ -97,7 +97,7 @@ function PermissionList() {
 
           {/* Group filter — dynamic từ permissions hiện có */}
           <Select value={filterGroup} onValueChange={setFilterGroup}>
-            <SelectTrigger className="w-52 h-8 text-sm">
+            <SelectTrigger className="h-8 w-full text-sm sm:w-52">
               <SelectValue placeholder="Lọc theo nhóm" />
             </SelectTrigger>
             <SelectContent>
@@ -111,7 +111,11 @@ function PermissionList() {
           </Select>
         </div>
 
-        <Button size="sm" onClick={() => setCreateOpen(true)}>
+        <Button
+          size="sm"
+          onClick={() => setCreateOpen(true)}
+          className="w-full sm:w-auto"
+        >
           <Plus className="mr-1.5 size-4" />
           Thêm quyền
         </Button>
@@ -131,21 +135,26 @@ function PermissionList() {
                 <h3 className="text-muted-foreground mb-2 text-xs font-semibold tracking-wider uppercase">
                   {groupLabel}
                 </h3>
-                <div className="rounded-md border">
-                  <Table>
+                <div className="overflow-x-auto rounded-md border">
+                  <Table className="min-w-[760px]">
                     <TableHeader>
                       <TableRow>
                         <TableHead className="w-52">Tên quyền</TableHead>
                         <TableHead>Mô tả</TableHead>
                         <TableHead className="w-44">Vai trò mặc định</TableHead>
-                        <TableHead className="w-32 text-right">Hành động</TableHead>
+                        <TableHead className="w-32 text-right">
+                          Hành động
+                        </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {perms.map((perm) => (
                         <TableRow key={perm.id}>
                           <TableCell>
-                            <Badge variant="outline" className="font-mono text-xs">
+                            <Badge
+                              variant="outline"
+                              className="font-mono text-xs"
+                            >
                               {perm.name}
                             </Badge>
                           </TableCell>
@@ -153,7 +162,9 @@ function PermissionList() {
                             {perm.description || "—"}
                           </TableCell>
                           <TableCell>
-                            <RoleBadges rolePermissions={perm.rolePermissions} />
+                            <RoleBadges
+                              rolePermissions={perm.rolePermissions}
+                            />
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex items-center justify-end gap-1">

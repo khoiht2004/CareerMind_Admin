@@ -60,8 +60,8 @@ function UserTable({ search, role }) {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[820px]">
           <TableHeader>
             <TableRow>
               <TableHead>Người dùng</TableHead>

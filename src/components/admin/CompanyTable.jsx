@@ -38,8 +38,8 @@ function CompanyTable({ search }) {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[860px]">
           <TableHeader>
             <TableRow>
               <TableHead>Công ty</TableHead>

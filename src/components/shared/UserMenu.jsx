@@ -43,7 +43,7 @@ function UserMenu() {
   );
 
   return (
-    <div className="flex items-center gap-0.5">
+    <div className="flex min-w-0 items-center gap-0.5">
       <NotificationDropdown />
 
       <Tooltip>
@@ -51,7 +51,7 @@ function UserMenu() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-10 w-10 cursor-pointer"
+            className="h-9 w-9 cursor-pointer sm:h-10 sm:w-10"
           >
             <Settings className="size-5" />
           </Button>
@@ -61,12 +61,15 @@ function UserMenu() {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="bg-muted border-b boder-border text-foreground ml-1 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full text-sm font-bold transition-all duration-150 hover:scale-105">
+          <button className="bg-muted boder-border text-foreground ml-1 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full border-b text-sm font-bold transition-all duration-150 hover:scale-105">
             {avatarContent}
           </button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-64">
+        <DropdownMenuContent
+          align="end"
+          className="w-[calc(100vw-1rem)] max-w-64"
+        >
           {/* User info */}
           <DropdownMenuLabel className="px-3 py-3 font-normal">
             <div className="flex items-center gap-3">

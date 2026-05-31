@@ -65,8 +65,8 @@ function PostTable({ search, category, status }) {
         </Button>
       </div>
 
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[940px]">
           <TableHeader>
             <TableRow>
               <TableHead>Bài viết</TableHead>
@@ -87,7 +87,10 @@ function PostTable({ search, category, status }) {
               </TableRow>
             ) : posts.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-muted-foreground py-10 text-center">
+                <TableCell
+                  colSpan={7}
+                  className="text-muted-foreground py-10 text-center"
+                >
                   Không có bài viết nào
                 </TableCell>
               </TableRow>
@@ -102,24 +105,32 @@ function PostTable({ search, category, status }) {
                   <TableRow key={post.id}>
                     <TableCell>
                       <div className="max-w-md">
-                        <p className="line-clamp-1 text-sm font-medium">{post.title}</p>
+                        <p className="line-clamp-1 text-sm font-medium">
+                          {post.title}
+                        </p>
                         <p className="text-muted-foreground line-clamp-1 text-xs">
                           {post.excerpt}
                         </p>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">{post.category || "Career"}</Badge>
+                      <Badge variant="outline">
+                        {post.category || "Career"}
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <div>
                         <p className="text-sm">{author}</p>
                         <p className="text-muted-foreground text-xs">
-                          {post.author?.company?.name || post.author?.role || "ADMIN"}
+                          {post.author?.company?.name ||
+                            post.author?.role ||
+                            "ADMIN"}
                         </p>
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm">{post.viewCount ?? 0}</TableCell>
+                    <TableCell className="text-sm">
+                      {post.viewCount ?? 0}
+                    </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {new Date(post.createdAt).toLocaleDateString("vi-VN")}
                     </TableCell>
@@ -137,8 +148,17 @@ function PostTable({ search, category, status }) {
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-1">
-                        <Button size="icon" variant="ghost" className="size-8" asChild>
-                          <a href={`/post/${post.id}`} target="_blank" rel="noreferrer">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="size-8"
+                          asChild
+                        >
+                          <a
+                            href={`/post/${post.id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
                             <Eye className="size-4" />
                           </a>
                         </Button>
@@ -153,7 +173,7 @@ function PostTable({ search, category, status }) {
                         <Button
                           size="icon"
                           variant="ghost"
-                          className="size-8 text-destructive"
+                          className="text-destructive size-8"
                           onClick={() => setDeleteTarget(post)}
                         >
                           <Trash2 className="size-4" />
@@ -187,7 +207,10 @@ function PostTable({ search, category, status }) {
         isLoadingDetail={isLoadingDetail}
       />
 
-      <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
+      <AlertDialog
+        open={!!deleteTarget}
+        onOpenChange={() => setDeleteTarget(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Xóa bài viết?</AlertDialogTitle>

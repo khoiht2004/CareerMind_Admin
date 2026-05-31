@@ -23,10 +23,10 @@ function CompanyDashboard() {
   ];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start gap-3">
-        <div className="bg-muted flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl text-xl font-bold">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+        <div className="bg-muted flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl text-xl font-bold sm:h-16 sm:w-16">
           {company?.logoUrl ? (
             <img
               src={company.logoUrl}
@@ -38,8 +38,8 @@ function CompanyDashboard() {
           )}
         </div>
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-xl font-bold sm:text-2xl">
               {company?.name ?? "Công ty của bạn"}
             </h1>
             {company?.isVerified && (

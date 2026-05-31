@@ -70,8 +70,8 @@ function Login() {
     <Card className="w-full max-w-md shadow-lg">
       <CardHeader className="space-y-2 pb-4 text-center">
         <div className="flex justify-center">
-          <div className="bg-primary text-primary-foreground flex h-11 w-11 items-center justify-center rounded-xl text-sm font-bold">
-            SRA
+          <div className="bg-primary text-primary-foreground flex h-11 w-32 items-center justify-center rounded-xl text-sm font-bold">
+            CareerMind
           </div>
         </div>
         <CardTitle className="text-2xl">Trang dành cho Quản trị viên</CardTitle>

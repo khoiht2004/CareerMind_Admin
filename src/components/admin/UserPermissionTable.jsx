@@ -43,7 +43,12 @@ function UserPermissionTable() {
   const [page, setPage] = useState(1);
   const [sheetUser, setSheetUser] = useState(null);
 
-  const { data, isFetching } = useGetAdminUsersQuery({ page, limit: 10, search, role });
+  const { data, isFetching } = useGetAdminUsersQuery({
+    page,
+    limit: 10,
+    search,
+    role,
+  });
 
   const responseData = data?.data;
   const users = responseData?.data ?? [];
@@ -63,8 +68,8 @@ function UserPermissionTable() {
   return (
     <div className="space-y-4">
       {/* Filters */}
-      <div className="flex items-center gap-3">
-        <div className="relative max-w-sm flex-1">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative w-full sm:max-w-sm sm:flex-1">
           <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             placeholder="Tìm theo tên hoặc email..."
@@ -74,7 +79,7 @@ function UserPermissionTable() {
           />
         </div>
         <Select value={role} onValueChange={handleRoleChange}>
-          <SelectTrigger className="w-44">
+          <SelectTrigger className="w-full sm:w-44">
             <SelectValue placeholder="Tất cả vai trò" />
           </SelectTrigger>
           <SelectContent>
@@ -87,8 +92,8 @@ function UserPermissionTable() {
       </div>
 
       {/* Table */}
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[760px]">
           <TableHeader>
             <TableRow>
               <TableHead>Người dùng</TableHead>
@@ -132,7 +137,9 @@ function UserPermissionTable() {
                             displayName[0]?.toUpperCase()
                           )}
                         </div>
-                        <span className="text-sm font-medium">{displayName}</span>
+                        <span className="text-sm font-medium">
+                          {displayName}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">

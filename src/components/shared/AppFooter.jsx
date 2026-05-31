@@ -51,7 +51,7 @@ export default function AppFooter() {
   return (
     <footer className="border-t bg-(--footer-app)">
       <div className="w-full py-6">
-        <div className="grid grid-cols-1 gap-10 px-7 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-3 lg:gap-10">
           {/* Column 1 */}
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export default function AppFooter() {
           </div>
 
           {/* Column 2 */}
-          <div className="flex gap-15 lg:gap-6 xl:gap-15">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-6 xl:gap-15">
             {footerLinks.map((col) => (
               <div key={col.title} className="space-y-3">
                 <div className="text-md font-semibold">{col.title}</div>
@@ -104,7 +104,7 @@ export default function AppFooter() {
             </p>
 
             <form
-              className="flex items-center gap-2"
+              className="flex flex-col gap-2 sm:flex-row sm:items-center"
               onSubmit={(e) => e.preventDefault()}
             >
               <div className="bg-background focus-within:ring-ring flex min-w-0 flex-1 items-center gap-2 rounded-xl border px-3 py-2 shadow-sm focus-within:ring-2">
@@ -118,7 +118,7 @@ export default function AppFooter() {
 
               <button
                 type="submit"
-                className="group bg-primary text-primary-foreground focus-visible:ring-ring inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl px-4 text-sm font-medium shadow-sm transition-all hover:-translate-y-0.5 hover:brightness-110 focus-visible:ring-2 focus-visible:outline-none"
+                className="group bg-primary text-primary-foreground focus-visible:ring-ring inline-flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-4 text-sm font-medium shadow-sm transition-all hover:-translate-y-0.5 hover:brightness-110 focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
               >
                 <span>Send</span>
                 <MoveRight className="size-4 transition-transform group-hover:translate-x-0.5" />
@@ -128,7 +128,7 @@ export default function AppFooter() {
         </div>
 
         {/* Footer bottom */}
-        <div className="mt-10 flex flex-col gap-3 border-t px-7 pt-6 md:flex-row md:items-center md:justify-between">
+        <div className="mt-10 flex flex-col gap-3 border-t px-4 pt-6 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div className="text-muted-foreground text-xs">
             © {new Date().getFullYear()} CareerMind. All rights reserved.
           </div>

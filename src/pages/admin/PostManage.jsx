@@ -17,16 +17,17 @@ function PostManage() {
   const [status, setStatus] = useState("ALL");
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Quản lý bài đăng</h1>
         <p className="text-muted-foreground mt-1 text-sm">
-          Quản lý toàn bộ bài viết nghề nghiệp, trạng thái xuất bản và nội dung blog trong hệ thống.
+          Quản lý toàn bộ bài viết nghề nghiệp, trạng thái xuất bản và nội dung
+          blog trong hệ thống.
         </p>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="relative min-w-72 max-w-sm flex-1">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <div className="relative w-full sm:max-w-sm sm:min-w-72 sm:flex-1">
           <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             placeholder="Tìm theo tiêu đề, tác giả..."
@@ -36,7 +37,7 @@ function PostManage() {
           />
         </div>
         <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger className="w-64">
+          <SelectTrigger className="w-full sm:w-64">
             <SelectValue placeholder="Tất cả danh mục" />
           </SelectTrigger>
           <SelectContent>
@@ -49,7 +50,7 @@ function PostManage() {
           </SelectContent>
         </Select>
         <Select value={status} onValueChange={setStatus}>
-          <SelectTrigger className="w-44">
+          <SelectTrigger className="w-full sm:w-44">
             <SelectValue placeholder="Trạng thái" />
           </SelectTrigger>
           <SelectContent>

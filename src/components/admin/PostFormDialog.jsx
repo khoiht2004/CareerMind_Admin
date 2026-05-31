@@ -32,9 +32,11 @@ function PostFormDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[92vh] overflow-y-auto sm:max-w-4xl">
+      <DialogContent className="max-h-[92vh] max-w-[calc(100vw-2rem)] overflow-y-auto sm:max-w-4xl">
         <DialogHeader>
-          <DialogTitle>{editId ? "Chỉnh sửa bài viết" : "Tạo bài viết"}</DialogTitle>
+          <DialogTitle>
+            {editId ? "Chỉnh sửa bài viết" : "Tạo bài viết"}
+          </DialogTitle>
         </DialogHeader>
 
         {isLoadingDetail ? (
@@ -100,7 +102,7 @@ function PostFormDialog({
                   value={form.content}
                   onChange={(e) => onChange("content", e.target.value)}
                   placeholder="<h2>Tiêu đề mục</h2><p>Nội dung...</p>"
-                  className="min-h-72 font-mono text-sm"
+                  className="min-h-56 font-mono text-sm sm:min-h-72"
                 />
               </div>
             </div>
@@ -116,11 +118,23 @@ function PostFormDialog({
         )}
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isSaving}>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isSaving}
+          >
             Hủy
           </Button>
-          <Button onClick={onSubmit} disabled={isSaving || isLoadingDetail} className="gap-2">
-            {isSaving ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
+          <Button
+            onClick={onSubmit}
+            disabled={isSaving || isLoadingDetail}
+            className="gap-2"
+          >
+            {isSaving ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Save className="size-4" />
+            )}
             {editId ? "Lưu thay đổi" : "Tạo mới"}
           </Button>
         </DialogFooter>
