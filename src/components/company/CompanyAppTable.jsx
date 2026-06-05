@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import PaginationControl from "@/components/shared/Pagination";
+import UserProfileDialog from "@/components/shared/UserProfileDialog";
 import {
   Table,
   TableBody,
@@ -16,6 +17,8 @@ import { COMPANY_APP_STATUS_CONFIG } from "@/config/company.constants";
 function CompanyAppTable({ status }) {
   const [page, setPage] = useState(1);
   const limit = 10;
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const { data, isFetching } = useGetMyCompanyApplicationsQuery({
     page,
@@ -27,6 +30,11 @@ function CompanyAppTable({ status }) {
   const applications = responseData?.applications ?? [];
   const totalPages = responseData?.totalPages ?? 1;
   const totalItems = responseData?.total ?? 0;
+
+  const handleUserClick = (userId) => {
+    setSelectedUserId(userId);
+    setIsProfileOpen(true);
+  };
 
   return (
     <div className="space-y-3">
@@ -65,7 +73,10 @@ function CompanyAppTable({ status }) {
                 return (
                   <TableRow key={app.id}>
                     <TableCell>
-                      <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleUserClick(app.user?.id)}
+                        className="flex items-center gap-2 text-left cursor-pointer hover:opacity-85 focus:outline-none"
+                      >
                         <div className="bg-muted flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full text-xs font-bold">
                           {app.user?.profile?.avatarUrl ? (
                             <img
@@ -78,12 +89,12 @@ function CompanyAppTable({ status }) {
                           )}
                         </div>
                         <div>
-                          <p className="text-sm font-medium">{name}</p>
+                          <p className="text-sm font-medium hover:text-primary transition-colors">{name}</p>
                           <p className="text-muted-foreground text-xs">
                             {app.user?.email}
                           </p>
                         </div>
-                      </div>
+                      </button>
                     </TableCell>
                     <TableCell className="text-sm font-medium">
                       {app.job?.title ?? "—"}
@@ -114,8 +125,15 @@ function CompanyAppTable({ status }) {
         itemLabel="đơn ứng tuyển"
         onPageChange={setPage}
       />
+
+      <UserProfileDialog
+        userId={selectedUserId}
+        open={isProfileOpen}
+        onOpenChange={setIsProfileOpen}
+      />
     </div>
   );
 }
 
 export default CompanyAppTable;
+

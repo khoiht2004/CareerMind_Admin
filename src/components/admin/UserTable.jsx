@@ -3,6 +3,7 @@ import { Shield, ShieldOff, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PaginationControl from "@/components/shared/Pagination";
+import UserProfileDialog from "@/components/shared/UserProfileDialog";
 import {
   Select,
   SelectContent,
@@ -42,6 +43,8 @@ const ROLE_CONFIG = {
 function UserTable({ search, role }) {
   const [page, setPage] = useState(1);
   const limit = 10;
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const { data, isFetching } = useGetAdminUsersQuery({
     page,
@@ -57,6 +60,11 @@ function UserTable({ search, role }) {
   const users = responseData?.data ?? [];
   const totalPages = responseData?.totalPages ?? 1;
   const totalItems = responseData?.total ?? 0;
+
+  const handleUserClick = (userId) => {
+    setSelectedUserId(userId);
+    setIsProfileOpen(true);
+  };
 
   return (
     <div className="space-y-3">
@@ -95,7 +103,10 @@ function UserTable({ search, role }) {
                 return (
                   <TableRow key={user.id}>
                     <TableCell>
-                      <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleUserClick(user.id)}
+                        className="flex items-center gap-2 text-left cursor-pointer hover:opacity-85 focus:outline-none"
+                      >
                         <div className="bg-muted text-foreground flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full text-xs font-bold">
                           {user.profile?.avatarUrl ? (
                             <img
@@ -107,10 +118,10 @@ function UserTable({ search, role }) {
                             displayName[0]?.toUpperCase()
                           )}
                         </div>
-                        <span className="text-sm font-medium">
+                        <span className="text-sm font-medium hover:text-primary transition-colors">
                           {displayName}
                         </span>
-                      </div>
+                      </button>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {user.email}
@@ -186,8 +197,15 @@ function UserTable({ search, role }) {
         itemLabel="người dùng"
         onPageChange={setPage}
       />
+
+      <UserProfileDialog
+        userId={selectedUserId}
+        open={isProfileOpen}
+        onOpenChange={setIsProfileOpen}
+      />
     </div>
   );
 }
 
 export default UserTable;
+

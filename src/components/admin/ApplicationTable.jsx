@@ -3,6 +3,7 @@ import { Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import UserProfileDialog from "@/components/shared/UserProfileDialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,6 +40,8 @@ function ApplicationTable({ search, status }) {
   const [page, setPage] = useState(1);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const limit = 20;
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const { data, isFetching } = useGetAdminApplicationsQuery({
     page,
@@ -55,6 +58,11 @@ function ApplicationTable({ search, status }) {
   const applications = responseData?.data ?? [];
   const totalPages = responseData?.totalPages ?? 1;
   const totalItems = responseData?.total ?? 0;
+
+  const handleUserClick = (userId) => {
+    setSelectedUserId(userId);
+    setIsProfileOpen(true);
+  };
 
   const handleUpdateStatus = async (id, nextStatus) => {
     try {
@@ -117,12 +125,15 @@ function ApplicationTable({ search, status }) {
                 return (
                   <TableRow key={app.id}>
                     <TableCell>
-                      <div>
-                        <p className="text-sm font-medium">{candidateName}</p>
+                      <button
+                        onClick={() => handleUserClick(app.user?.id)}
+                        className="text-left cursor-pointer hover:opacity-85 focus:outline-none"
+                      >
+                        <p className="text-sm font-medium hover:text-primary transition-colors">{candidateName}</p>
                         <p className="text-muted-foreground text-xs">
                           {app.user?.email}
                         </p>
-                      </div>
+                      </button>
                     </TableCell>
                     <TableCell className="text-sm font-medium">
                       {app.job?.title}
@@ -228,8 +239,15 @@ function ApplicationTable({ search, status }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <UserProfileDialog
+        userId={selectedUserId}
+        open={isProfileOpen}
+        onOpenChange={setIsProfileOpen}
+      />
     </div>
   );
 }
 
 export default ApplicationTable;
+

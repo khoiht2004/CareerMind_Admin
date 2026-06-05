@@ -7,3 +7,5 @@ export const REFRESH_TOKEN_KEY = "refresh_token";
 export const MOBILE_BREAKPOINT = 1024;
 
 export const ROWS_PER_PAGE_OPTIONS = ["10", "25", "50", "100"];
+
+export const AVATAR_PLACEHOLDER = "https://www.gravatar.com/avatar/?d=mp";
