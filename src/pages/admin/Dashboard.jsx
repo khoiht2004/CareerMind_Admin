@@ -36,7 +36,7 @@ function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold">Tổng quan hệ thống</h1>
@@ -46,7 +46,7 @@ function Dashboard() {
       </div>
 
       {/* Stats Card */}
-      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {statCards.map((s) => (
           <StatCard key={s.title} {...s} />
         ))}

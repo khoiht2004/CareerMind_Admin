@@ -61,6 +61,49 @@ export const adminService = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Job"],
     }),
+    deleteAdminJob: builder.mutation({
+      query: (id) => ({ url: `/admin/jobs/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Job", "Application"],
+    }),
+    getAdminPosts: builder.query({
+      query: (params = {}) => {
+        const search = new URLSearchParams();
+        Object.entries(params).forEach(
+          ([k, v]) =>
+            v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
+        );
+        return `/admin/posts?${search.toString()}`;
+      },
+      providesTags: ["Post"],
+    }),
+    getAdminPostById: builder.query({
+      query: (id) => `/admin/posts/${id}`,
+      providesTags: (_, __, id) => [{ type: "Post", id }],
+    }),
+    createAdminPost: builder.mutation({
+      query: (body) => ({ url: "/admin/posts", method: "POST", body }),
+      invalidatesTags: ["Post"],
+    }),
+    updateAdminPost: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/admin/posts/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["Post"],
+    }),
+    updateAdminPostPublished: builder.mutation({
+      query: ({ id, isPublished }) => ({
+        url: `/admin/posts/${id}/published`,
+        method: "PATCH",
+        body: { isPublished },
+      }),
+      invalidatesTags: ["Post"],
+    }),
+    deleteAdminPost: builder.mutation({
+      query: (id) => ({ url: `/admin/posts/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Post"],
+    }),
     getAdminApplications: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
@@ -80,6 +123,10 @@ export const adminService = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Application"],
     }),
+    deleteAdminApplication: builder.mutation({
+      query: (id) => ({ url: `/admin/applications/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Application", "Job"],
+    }),
     getChatStats: builder.query({
       query: () => "/admin/chat-stats",
     }),
@@ -96,6 +143,77 @@ export const adminService = apiSlice.injectEndpoints({
     getSystemStats: builder.query({
       query: () => "/admin/system-stats",
     }),
+    getAdminCompanies: builder.query({
+      query: (params = {}) => {
+        const search = new URLSearchParams();
+        Object.entries(params).forEach(
+          ([k, v]) => v !== undefined && v !== "" && search.set(k, v),
+        );
+        return `/admin/companies?${search.toString()}`;
+      },
+      providesTags: ["Company"],
+    }),
+    createAdminCompany: builder.mutation({
+      query: (body) => ({ url: "/admin/companies", method: "POST", body }),
+      invalidatesTags: ["Company"],
+    }),
+    verifyCompany: builder.mutation({
+      query: (id) => ({ url: `/admin/companies/${id}/verify`, method: "PUT" }),
+      invalidatesTags: ["Company"],
+    }),
+    toggleCompanyActive: builder.mutation({
+      query: (id) => ({ url: `/admin/companies/${id}/active`, method: "PUT" }),
+      invalidatesTags: ["Company"],
+    }),
+
+    // ── Queue Management ──────────────────────────────────────────────────
+    getAdminQueues: builder.query({
+      query: (params = {}) => {
+        const search = new URLSearchParams();
+        Object.entries(params).forEach(
+          ([k, v]) =>
+            v !== undefined && v !== "" && v !== "ALL" && search.set(k, v),
+        );
+        return `/admin/queues?${search.toString()}`;
+      },
+      providesTags: ["Queue"],
+    }),
+
+    // ── Permission Management ──────────────────────────────────────────────
+    getAllPermissions: builder.query({
+      query: () => "/admin/permissions",
+      providesTags: ["Permission"],
+    }),
+    createPermission: builder.mutation({
+      query: (body) => ({ url: "/admin/permissions", method: "POST", body }),
+      invalidatesTags: ["Permission"],
+    }),
+    updatePermission: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/admin/permissions/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Permission"],
+    }),
+    deletePermission: builder.mutation({
+      query: (id) => ({ url: `/admin/permissions/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Permission"],
+    }),
+    getUserPermissionDetails: builder.query({
+      query: (userId) => `/admin/users/${userId}/permissions`,
+      providesTags: (_, __, userId) => [{ type: "UserPermission", id: userId }],
+    }),
+    updateUserPermission: builder.mutation({
+      query: ({ userId, permissionId, isGranted }) => ({
+        url: `/admin/users/${userId}/permissions`,
+        method: "POST",
+        body: { permissionId, isGranted },
+      }),
+      invalidatesTags: (_, __, { userId }) => [
+        { type: "UserPermission", id: userId },
+      ],
+    }),
   }),
 });
 
@@ -109,9 +227,28 @@ export const {
   useToggleUserActiveMutation,
   useGetAdminJobsQuery,
   useUpdateJobStatusMutation,
+  useDeleteAdminJobMutation,
+  useGetAdminPostsQuery,
+  useGetAdminPostByIdQuery,
+  useCreateAdminPostMutation,
+  useUpdateAdminPostMutation,
+  useUpdateAdminPostPublishedMutation,
+  useDeleteAdminPostMutation,
   useGetAdminApplicationsQuery,
   useUpdateAdminApplicationStatusMutation,
+  useDeleteAdminApplicationMutation,
   useGetChatStatsQuery,
   useGetAdminChatSessionsQuery,
   useGetSystemStatsQuery,
+  useGetAdminQueuesQuery,
+  useGetAdminCompaniesQuery,
+  useCreateAdminCompanyMutation,
+  useVerifyCompanyMutation,
+  useToggleCompanyActiveMutation,
+  useGetAllPermissionsQuery,
+  useCreatePermissionMutation,
+  useUpdatePermissionMutation,
+  useDeletePermissionMutation,
+  useGetUserPermissionDetailsQuery,
+  useUpdateUserPermissionMutation,
 } = adminService;

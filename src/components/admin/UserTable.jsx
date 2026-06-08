@@ -3,6 +3,7 @@ import { Shield, ShieldOff, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PaginationControl from "@/components/shared/Pagination";
+import UserProfileDialog from "@/components/shared/UserProfileDialog";
 import {
   Select,
   SelectContent,
@@ -27,21 +28,23 @@ import {
 const ROLE_CONFIG = {
   ADMIN: {
     label: "Admin",
-    className: "bg-red-100 text-red-700 border-red-200",
+    className: "bg-destructive/10 text-destructive border-destructive/20",
   },
   RECRUITER: {
     label: "Nhà tuyển dụng",
-    className: "bg-blue-100 text-blue-700 border-blue-200",
+    className: "bg-secondary/10 text-secondary border-secondary/20",
   },
   CANDIDATE: {
     label: "Ứng viên",
-    className: "bg-green-100 text-green-700 border-green-200",
+    className: "bg-primary/10 text-primary border-primary/20",
   },
 };
 
 function UserTable({ search, role }) {
   const [page, setPage] = useState(1);
   const limit = 10;
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const { data, isFetching } = useGetAdminUsersQuery({
     page,
@@ -58,10 +61,15 @@ function UserTable({ search, role }) {
   const totalPages = responseData?.totalPages ?? 1;
   const totalItems = responseData?.total ?? 0;
 
+  const handleUserClick = (userId) => {
+    setSelectedUserId(userId);
+    setIsProfileOpen(true);
+  };
+
   return (
     <div className="space-y-3">
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[820px]">
           <TableHeader>
             <TableRow>
               <TableHead>Người dùng</TableHead>
@@ -95,8 +103,11 @@ function UserTable({ search, role }) {
                 return (
                   <TableRow key={user.id}>
                     <TableCell>
-                      <div className="flex items-center gap-2">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-zinc-200 text-xs font-bold text-zinc-700">
+                      <button
+                        onClick={() => handleUserClick(user.id)}
+                        className="flex items-center gap-2 text-left cursor-pointer hover:opacity-85 focus:outline-none"
+                      >
+                        <div className="bg-muted text-foreground flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full text-xs font-bold">
                           {user.profile?.avatarUrl ? (
                             <img
                               src={user.profile.avatarUrl}
@@ -107,10 +118,10 @@ function UserTable({ search, role }) {
                             displayName[0]?.toUpperCase()
                           )}
                         </div>
-                        <span className="text-sm font-medium">
+                        <span className="text-sm font-medium hover:text-primary transition-colors">
                           {displayName}
                         </span>
-                      </div>
+                      </button>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {user.email}
@@ -124,8 +135,8 @@ function UserTable({ search, role }) {
                       <Badge
                         className={`border text-xs ${
                           user.isActive
-                            ? "border-green-200 bg-green-100 text-green-700"
-                            : "border-gray-200 bg-gray-100 text-gray-600"
+                            ? "bg-primary/10 text-primary border-primary/20"
+                            : "bg-muted text-muted-foreground border-border"
                         }`}
                       >
                         {user.isActive ? "Hoạt động" : "Tạm khóa"}
@@ -163,9 +174,9 @@ function UserTable({ search, role }) {
                           title={user.isActive ? "Khóa tài khoản" : "Mở khóa"}
                         >
                           {user.isActive ? (
-                            <ShieldOff className="size-3.5 text-red-500" />
+                            <ShieldOff className="text-destructive size-3.5" />
                           ) : (
-                            <Shield className="size-3.5 text-green-500" />
+                            <Shield className="text-primary size-3.5" />
                           )}
                         </Button>
                       </div>
@@ -186,8 +197,15 @@ function UserTable({ search, role }) {
         itemLabel="người dùng"
         onPageChange={setPage}
       />
+
+      <UserProfileDialog
+        userId={selectedUserId}
+        open={isProfileOpen}
+        onOpenChange={setIsProfileOpen}
+      />
     </div>
   );
 }
 
 export default UserTable;
+

@@ -55,85 +55,89 @@ function RecentApplicationsTable() {
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-0">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Ứng viên</TableHead>
-              <TableHead>Vị trí</TableHead>
-              <TableHead>Công ty</TableHead>
-              <TableHead>Ngày nộp</TableHead>
-              <TableHead>Trạng thái</TableHead>
-              <TableHead className="w-10" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {pagedApps.length === 0 ? (
+        <div className="overflow-x-auto">
+          <Table className="min-w-[760px]">
+            <TableHeader>
               <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="text-muted-foreground py-8 text-center"
-                >
-                  Chưa có đơn ứng tuyển nào
-                </TableCell>
+                <TableHead>Ứng viên</TableHead>
+                <TableHead>Vị trí</TableHead>
+                <TableHead>Công ty</TableHead>
+                <TableHead>Ngày nộp</TableHead>
+                <TableHead>Trạng thái</TableHead>
+                <TableHead className="w-10" />
               </TableRow>
-            ) : (
-              pagedApps.map((app) => {
-                const cfg = APPLICATION_STATUS_CONFIG[app.status];
-                const Icon = cfg?.icon;
-                const candidateName =
-                  app.user?.profile?.fullName ?? app.user?.email ?? "—";
-                return (
-                  <TableRow key={app.id}>
-                    <TableCell className="text-sm font-medium">
-                      {candidateName}
-                    </TableCell>
-                    <TableCell className="text-sm">{app.job?.title}</TableCell>
-                    <TableCell className="text-muted-foreground text-sm">
-                      {app.job?.company}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground text-sm">
-                      {new Date(app.createdAt).toLocaleDateString("vi-VN")}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        className={`gap-1 border text-xs ${cfg?.className}`}
-                      >
-                        {Icon && <Icon className="size-3" />}
-                        {cfg?.label ?? app.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7"
-                          >
-                            <MoreVertical className="size-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem className="cursor-pointer gap-2">
-                            <Pencil className="size-4" />
-                            Chỉnh sửa
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer gap-2">
-                            <Trash2 className="size-4" />
-                            Xóa
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            )}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {pagedApps.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-muted-foreground py-8 text-center"
+                  >
+                    Chưa có đơn ứng tuyển nào
+                  </TableCell>
+                </TableRow>
+              ) : (
+                pagedApps.map((app) => {
+                  const cfg = APPLICATION_STATUS_CONFIG[app.status];
+                  const Icon = cfg?.icon;
+                  const candidateName =
+                    app.user?.profile?.fullName ?? app.user?.email ?? "—";
+                  return (
+                    <TableRow key={app.id}>
+                      <TableCell className="text-sm font-medium">
+                        {candidateName}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {app.job?.title}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {app.job?.company?.name ?? "—"}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {new Date(app.createdAt).toLocaleDateString("vi-VN")}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          className={`gap-1 border text-xs ${cfg?.className}`}
+                        >
+                          {Icon && <Icon className="size-3" />}
+                          {cfg?.label ?? app.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7"
+                            >
+                              <MoreVertical className="size-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem className="cursor-pointer gap-2">
+                              <Pencil className="size-4" />
+                              Chỉnh sửa
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer gap-2">
+                              <Trash2 className="size-4" />
+                              Xóa
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
+            </TableBody>
+          </Table>
+        </div>
 
         {/* Pagination */}
-        <div className="mt-4 flex items-center justify-between gap-4">
+        <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <Field orientation="horizontal" className="w-fit">
             <FieldLabel htmlFor="select-rows-per-page">
               Rows per page

@@ -26,7 +26,7 @@ function PaginationControl({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-between text-sm">
+    <div className="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
       {/* Text info (optional) */}
       {total !== undefined ? (
         <span className="text-muted-foreground">

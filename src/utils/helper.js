@@ -5,6 +5,15 @@ const formatTime = (dateString) => {
   return `${hours}:${minutes}`;
 };
 
+const formatVN = (dateStr) =>
+  dateStr
+    ? new Date(dateStr).toLocaleDateString("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    : null;
+
 function parseDate(dateStr) {
   if (!dateStr) return new Date();
   const parts = String(dateStr).split("T")[0].split("-");
@@ -37,6 +46,7 @@ function intTickFormatter(v) {
 
 export {
   formatTime,
+  formatVN,
   parseDate,
   formatDateLabel,
   getXAxisInterval,

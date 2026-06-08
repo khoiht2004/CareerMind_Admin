@@ -34,7 +34,7 @@ function AppHeader() {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <header className="bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between border-b px-3 backdrop-blur">
+    <header className="bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between border-b px-2 backdrop-blur sm:px-3">
       {/* Sidebar toggle */}
       <Tooltip>
         <TooltipTrigger asChild>
@@ -42,7 +42,7 @@ function AppHeader() {
             variant="ghost"
             size="icon"
             onClick={toggle}
-            className="h-10 w-10 cursor-pointer"
+            className="h-9 w-9 cursor-pointer sm:h-10 sm:w-10"
           >
             <PanelLeft className="size-5" />
           </Button>

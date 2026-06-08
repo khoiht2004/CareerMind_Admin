@@ -24,8 +24,8 @@ function ChatSessionsTable() {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-md border">
-        <Table>
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="min-w-[760px]">
           <TableHeader>
             <TableRow>
               <TableHead>Tiêu đề phiên</TableHead>
@@ -39,18 +39,22 @@ function ChatSessionsTable() {
             {isFetching ? (
               <TableRow>
                 <TableCell colSpan={5} className="py-10 text-center">
-                  <Loader2 className="mx-auto size-5 animate-spin text-muted-foreground" />
+                  <Loader2 className="text-muted-foreground mx-auto size-5 animate-spin" />
                 </TableCell>
               </TableRow>
             ) : sessions.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-muted-foreground py-10 text-center">
+                <TableCell
+                  colSpan={5}
+                  className="text-muted-foreground py-10 text-center"
+                >
                   Chưa có phiên chat nào
                 </TableCell>
               </TableRow>
             ) : (
               sessions.map((session) => {
-                const userName = session.user?.profile?.fullName ?? session.user?.email ?? "—";
+                const userName =
+                  session.user?.profile?.fullName ?? session.user?.email ?? "—";
                 return (
                   <TableRow key={session.id}>
                     <TableCell className="text-sm font-medium">
@@ -59,10 +63,14 @@ function ChatSessionsTable() {
                     <TableCell>
                       <div>
                         <p className="text-sm">{userName}</p>
-                        <p className="text-muted-foreground text-xs">{session.user?.email}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {session.user?.email}
+                        </p>
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm">{session._count?.messages ?? 0}</TableCell>
+                    <TableCell className="text-sm">
+                      {session._count?.messages ?? 0}
+                    </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {new Date(session.createdAt).toLocaleDateString("vi-VN")}
                     </TableCell>
@@ -78,15 +86,25 @@ function ChatSessionsTable() {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
           <span className="text-muted-foreground">
             Trang {page} / {totalPages} — {totalItems} phiên
           </span>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => p - 1)}
+            >
               Trước
             </Button>
-            <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => p + 1)}
+            >
               Sau
             </Button>
           </div>

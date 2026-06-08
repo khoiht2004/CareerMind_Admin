@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, Pencil, Loader2 } from "lucide-react";
+import { Camera, Pencil, Loader2, Building2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,33 +9,36 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  useGetProfileQuery,
-  useUpdateProfileMutation,
-} from "@/services/profile.service";
+  useGetMyCompanyProfileQuery,
+  useUpdateMyCompanyProfileMutation,
+} from "@/services/company.service";
 
 function MyProfile() {
-  const { data: response, isLoading } = useGetProfileQuery();
-  const [updateProfile, { isLoading: isSaving }] = useUpdateProfileMutation();
-  const profile = response?.data;
+  const { data: response, isLoading } = useGetMyCompanyProfileQuery();
+  const [updateCompany, { isLoading: isSaving }] =
+    useUpdateMyCompanyProfileMutation();
+  const company = response?.data;
 
   const [editing, setEditing] = useState(false);
-  const [bio, setBio] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
   useEffect(() => {
-    if (profile) {
-      setBio(profile.bio ?? "");
-      setPhone(profile.phone ?? "");
-      setAddress(profile.address ?? "");
+    if (company) {
+      setName(company.name ?? "");
+      setDescription(company.description ?? "");
+      setPhone(company.phone ?? "");
+      setAddress(company.address ?? "");
     }
-  }, [profile]);
+  }, [company]);
 
   const handleSave = async () => {
     try {
-      await updateProfile({ bio, phone, address }).unwrap();
+      await updateCompany({ name, description, phone, address }).unwrap();
       setEditing(false);
-      toast.success("Đã cập nhật thông tin");
+      toast.success("Đã cập nhật thông tin công ty");
     } catch {
       toast.error("Cập nhật thất bại");
     }
@@ -56,34 +59,40 @@ function MyProfile() {
         <CardContent className="p-6">
           <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
             <div className="relative">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src={profile?.avatarUrl} />
-                <AvatarFallback className="text-xl font-bold">
-                  {profile?.fullName?.[0]?.toUpperCase()}
+              <Avatar className="h-20 w-20 rounded-xl">
+                <AvatarImage src={company?.logoUrl} />
+                <AvatarFallback className="rounded-xl text-xl font-bold">
+                  {company?.name?.[0]?.toUpperCase() ?? "C"}
                 </AvatarFallback>
               </Avatar>
-              <button className="bg-primary text-primary-foreground absolute -right-1 -bottom-1 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full shadow-sm transition-opacity hover:opacity-90">
+              <button className="bg-primary text-primary-foreground absolute -right-2 -bottom-2 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full shadow-sm transition-opacity hover:opacity-90">
                 <Camera className="size-3.5" />
               </button>
             </div>
             <div className="flex-1 space-y-1 text-center sm:text-left">
-              <h2 className="text-lg font-bold">{profile?.fullName}</h2>
-              <p className="text-muted-foreground text-sm">
-                {profile?.user?.email}
-              </p>
-              <Badge variant="secondary" className="text-xs">
-                {profile?.user?.role}
-              </Badge>
+              <h2 className="text-xl font-bold">{company?.name}</h2>
+              <p className="text-muted-foreground text-sm">{company?.email}</p>
+              <div className="mt-1">
+                {company?.isVerified ? (
+                  <Badge className="border-primary/20 bg-primary/10 text-primary">
+                    Đã xác minh
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="text-muted-foreground">
+                    Chưa xác minh
+                  </Badge>
+                )}
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Bio */}
+      {/* Description */}
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm">Giới thiệu bản thân</CardTitle>
+            <CardTitle className="text-sm">Giới thiệu công ty</CardTitle>
             <Button
               variant="ghost"
               size="sm"
@@ -99,43 +108,59 @@ function MyProfile() {
           {editing ? (
             <div className="space-y-3">
               <Textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 rows={4}
-                placeholder="Giới thiệu về bản thân..."
+                placeholder="Giới thiệu về công ty..."
               />
-              <Button
-                size="sm"
-                onClick={handleSave}
-                disabled={isSaving}
-                className="cursor-pointer"
-              >
-                {isSaving && <Loader2 className="size-3.5 animate-spin" />}
-                Lưu
-              </Button>
+              <div className="flex justify-end">
+                <Button
+                  size="sm"
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="cursor-pointer"
+                >
+                  {isSaving && (
+                    <Loader2 className="mr-1 size-3.5 animate-spin" />
+                  )}
+                  Lưu
+                </Button>
+              </div>
             </div>
           ) : (
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              {bio || "Chưa có giới thiệu"}
+            <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-wrap">
+              {description || "Chưa có bài giới thiệu..."}
             </p>
           )}
         </CardContent>
       </Card>
 
-      {/* Contact info */}
+      {/* Thông tin liên hệ */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm">Thông tin liên hệ</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 pt-0">
+        <CardContent className="space-y-4 pt-0">
           <div className="space-y-1.5">
-            <Label className="text-muted-foreground text-xs">Email</Label>
+            <Label className="text-muted-foreground text-xs">
+              Email công ty (Cố định)
+            </Label>
             <Input
-              defaultValue={profile?.user?.email}
+              defaultValue={company?.email}
               readOnly
               className="bg-muted/40"
             />
           </div>
+
+          <div className="space-y-1.5">
+            <Label className="text-muted-foreground text-xs">Tên công ty</Label>
+            <Input
+              placeholder="Nhập tên công ty"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
           <div className="space-y-1.5">
             <Label className="text-muted-foreground text-xs">
               Số điện thoại
@@ -146,22 +171,23 @@ function MyProfile() {
               onChange={(e) => setPhone(e.target.value)}
             />
           </div>
+
           <div className="space-y-1.5">
             <Label className="text-muted-foreground text-xs">Địa chỉ</Label>
             <Input
-              placeholder="Chưa cập nhật"
+              placeholder="Chưa cập nhật cụ thể"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
           </div>
+
           <Button
             onClick={handleSave}
             disabled={isSaving}
-            size="sm"
-            className="h-8 cursor-pointer px-4 py-2.5 text-[14px] font-medium"
+            className="mt-2 w-full cursor-pointer sm:w-auto"
           >
-            {isSaving && <Loader2 className="size-3.5 animate-spin" />}
-            Lưu thay đổi
+            {isSaving && <Loader2 className="mr-1 size-4 animate-spin" />}
+            Cập nhật thông tin
           </Button>
         </CardContent>
       </Card>
