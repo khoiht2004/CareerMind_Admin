@@ -127,9 +127,11 @@ function ApplicationTable({ search, status }) {
                     <TableCell>
                       <button
                         onClick={() => handleUserClick(app.user?.id)}
-                        className="text-left cursor-pointer hover:opacity-85 focus:outline-none"
+                        className="cursor-pointer text-left hover:opacity-85 focus:outline-none"
                       >
-                        <p className="text-sm font-medium hover:text-primary transition-colors">{candidateName}</p>
+                        <p className="hover:text-primary text-sm font-medium transition-colors">
+                          {candidateName}
+                        </p>
                         <p className="text-muted-foreground text-xs">
                           {app.user?.email}
                         </p>
@@ -250,4 +252,3 @@ function ApplicationTable({ search, status }) {
 }
 
 export default ApplicationTable;
-
