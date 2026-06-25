@@ -148,7 +148,8 @@ function PostTable({ search, category, status }) {
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-1">
-                        <Button
+                        {/* Xem bài viết  */}
+                        {/* <Button
                           size="icon"
                           variant="ghost"
                           className="size-8"
@@ -161,7 +162,8 @@ function PostTable({ search, category, status }) {
                           >
                             <Eye className="size-4" />
                           </a>
-                        </Button>
+                        </Button> */}
+                        {/* Chỉnh sửa bài viết  */}
                         <Button
                           size="icon"
                           variant="ghost"
@@ -170,6 +172,8 @@ function PostTable({ search, category, status }) {
                         >
                           <Pencil className="size-4" />
                         </Button>
+
+                        {/* Xóa bài viết  */}
                         <Button
                           size="icon"
                           variant="ghost"
